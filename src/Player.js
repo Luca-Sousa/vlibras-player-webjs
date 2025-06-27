@@ -98,11 +98,8 @@ Player.prototype.translate = function (text, { isEnabledStats = true } = {}) {
   this.translator.translate(text, location.host, (gloss, error) => {
     if (error) {
       this.play(text.toUpperCase());
-      this.emit(
-        "error",
-        error === "timeout_error" ? error : "translation_error"
-      );
-      return;
+      if (error === "timeout_error") this.emit("error", "timeout_error");
+      else return this.emit("translate:end");
     }
 
     this.play(gloss, { fromTranslation: true, isEnabledStats });
@@ -115,7 +112,9 @@ Player.prototype.play = function (
   { fromTranslation = false, isEnabledStats = true } = {}
 ) {
   if (!isEnabledStats && isDefaultUrl.bind(this)()) {
-    this.playerManager.setBaseUrl(config.dictionaryStaticUrl + this.region + "/");
+    this.playerManager.setBaseUrl(
+      config.dictionaryStaticUrl + this.region + "/"
+    );
   } else if (isEnabledStats && !isDefaultUrl.bind(this)()) {
     this.playerManager.setBaseUrl(config.dictionaryUrl + this.region + "/");
   }
