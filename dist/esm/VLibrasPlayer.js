@@ -201,6 +201,12 @@ export class VLibrasPlayer {
     getRegion() {
         return this.region;
     }
+    /**
+     * Obtém o event emitter do player
+     */
+    getEventEmitter() {
+        return this.eventEmitter;
+    }
     // Métodos privados
     isDefaultUrl() {
         return this.playerManager.currentBaseUrl === config.dictionaryUrl + this.region + '/';
@@ -342,6 +348,18 @@ export class VLibrasPlayer {
      */
     enableDebugMode() {
         VLibrasDevTools.enableDebugMode();
+    }
+    /**
+     * Desativa modo debug
+     */
+    disableDebugMode() {
+        VLibrasDevTools.disableDebugMode();
+    }
+    /**
+     * Verifica se está em modo debug
+     */
+    isDebugMode() {
+        return VLibrasDevTools.isDebugEnabled();
     }
     /**
      * Obtém estatísticas do player

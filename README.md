@@ -2,22 +2,32 @@
 
 Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player em aplicações web, permitindo fácil tradução de texto para Libras (Língua Brasileira de Sinais) através de um avatar animado.
 
-![Version](https://img.shields.io/badge/version-v2.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)
 ![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)
 
 ## ✨ Principais Melhorias
 
-### 🆕 Novidades da v2.0
+### 🆕 Novidades da v2.2.0
+- **Sistema de eventos type-safe** com VLibrasEventEmitter
+- **DevTools avançado** com diagnósticos e profiling
+- **Configuração global** com persistência e auto-configuração
+- **Cache inteligente** com estratégias híbridas e TTL
+- **Debug mode** e logging estruturado
+- **Temas automáticos** (light/dark/auto)
+- **Configurações de acessibilidade** avançadas
+
+### 🚀 Funcionalidades Anteriores (v2.0/v2.1)
 - **TypeScript nativo** com tipagem completa
 - **Suporte ESM/CJS/UMD** para máxima compatibilidade
 - **API moderna** com Promises e async/await
 - **Tree-shaking** para bundles menores
 - **Zero dependências** em runtime
 - **Testes automatizados** com Jest
-- **Documentação completa** com exemplos
+- **Unity Bridge** e CSS otimizado
+- **Estados claros** e presets prontos
 
-### 🚀 Benefícios vs CDN
+### 🎯 Benefícios vs CDN
 - ✅ **Controle de versão** preciso via npm
 - ✅ **Bundle otimizado** com tree-shaking
 - ✅ **IntelliSense completo** no VS Code
@@ -25,6 +35,88 @@ Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player
 - ✅ **Cache eficiente** pelo npm/bundler
 - ✅ **Desenvolvimento offline** sem dependência de CDN
 - ✅ **Versionamento semântico** para atualizações seguras
+
+## 🎯 Novas Funcionalidades v2.2.0
+
+### Sistema de Eventos Type-Safe
+```typescript
+import { VLibrasPlayer } from 'vlibras-player-webjs';
+
+const player = new VLibrasPlayer();
+
+// Eventos detalhados com tipagem completa
+player.on('player:ready', (data) => {
+  console.log('Player pronto em:', data.timestamp);
+});
+
+player.on('translation:complete', (data) => {
+  console.log(`Tradução concluída: ${data.gloss} (${data.duration}ms)`);
+});
+
+player.on('performance:slow', (data) => {
+  console.warn(`Operação lenta: ${data.operation} - ${data.duration}ms`);
+});
+```
+
+### DevTools e Diagnósticos
+```typescript
+import { VLibrasDevTools } from 'vlibras-player-webjs';
+
+// Ativar modo debug
+player.enableDebugMode();
+
+// Executar diagnósticos completos
+const diagnostics = await player.runDiagnostics();
+console.log('WebGL suportado:', diagnostics.webgl.supported);
+console.log('Assets carregados:', diagnostics.assets.loaded);
+
+// Relatório de performance
+const performance = VLibrasDevTools.getPerformanceReport();
+console.log('Operações lentas:', performance.slowOperations);
+```
+
+### Cache Inteligente
+```typescript
+import { vlibrasCache, VLibrasCache } from 'vlibras-player-webjs';
+
+// Configurar cache híbrido
+VLibrasCache.configure({
+  type: 'hybrid', // memory + localStorage + indexedDB
+  maxSize: 50, // 50MB
+  ttl: 3600, // 1 hora
+  compression: true
+});
+
+// Preload de palavras comuns
+await vlibrasCache.preloadCommonWords(['olá', 'obrigado', 'por favor']);
+
+// Cache por contexto
+await vlibrasCache.preloadForContext('tutorial');
+```
+
+### Configuração Global
+```typescript
+import { VLibrasGlobalConfig } from 'vlibras-player-webjs';
+
+// Auto-configuração por ambiente
+VLibrasGlobalConfig.autoConfigureForEnvironment();
+
+// Configuração personalizada
+VLibrasGlobalConfig.configure({
+  theme: 'auto', // light/dark/auto
+  debug: true,
+  performance: {
+    preloadAssets: true,
+    cacheEnabled: true,
+    enableGPUAcceleration: true
+  },
+  accessibility: {
+    announceStateChanges: true,
+    keyboardNavigation: true,
+    screenReaderSupport: true
+  }
+});
+```
 
 ## 📦 Instalação
 
@@ -462,7 +554,7 @@ npm run demo
 
 ## 📄 Licença
 
-LGPL-3.0 © [VLibras Team](https://www.vlibras.gov.br/)
+LGPL-3.0 © [VLibras Team](https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/vlibras)
 
 ## 🤝 Contribuindo
 
@@ -472,22 +564,26 @@ LGPL-3.0 © [VLibras Team](https://www.vlibras.gov.br/)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
+## 📚 Documentação Completa
+
+- 📖 [CHANGELOG.md](./CHANGELOG.md) - Histórico detalhado de mudanças
+- 🚀 [EXEMPLOS v2.2.0](./EXEMPLOS-v2.2.0.md) - Guias práticos das novas funcionalidades
+- 🔄 [MIGRATION-GUIDE.md](./MIGRATION-GUIDE.md) - Guia de migração entre versões
+- 🛠️ [CONTRIBUTING.md](./CONTRIBUTING.md) - Como contribuir com o projeto
+- ⚙️ [FUNCOES-UTILITARIAS-VLIBRAS.md](./FUNCOES-UTILITARIAS-VLIBRAS.md) - Requisitos e especificações
+
 ## 🆘 Suporte
 
-- 📖 [Documentação Oficial](https://www.vlibras.gov.br/doc)
-- 🐛 [Reportar Bug](https://github.com/vlibras/player-webjs/issues)
-- 💬 [Discussões](https://github.com/vlibras/player-webjs/discussions)
-- 📧 [Contato](mailto:contato@vlibras.gov.br)
+- 📖 [Documentação Oficial](https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/vlibras)
 
 ## 🗺️ Roadmap
 
-- [ ] Suporte a mais formatos de avatar
-- [ ] Integração com Web Components
-- [ ] Plugin para WordPress
-- [ ] Suporte a PWA
-- [ ] Cache inteligente de glosas
-- [ ] Modo offline
+- [x] ✅ Sistema de eventos type-safe (v2.2.0)
+- [x] ✅ DevTools e diagnósticos (v2.2.0) 
+- [x] ✅ Cache inteligente (v2.2.0)
+- [x] ✅ Configuração global (v2.2.0)
+- [ ] Modo offline completo
 
 ---
 
-**Desenvolvido com ❤️ pela equipe VLibras para tornar a web mais acessível!**
+**Desenvolvido com ❤️ para tornar a web mais acessível!**

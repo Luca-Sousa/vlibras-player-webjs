@@ -204,6 +204,12 @@ class VLibrasPlayer {
     getRegion() {
         return this.region;
     }
+    /**
+     * Obtém o event emitter do player
+     */
+    getEventEmitter() {
+        return this.eventEmitter;
+    }
     // Métodos privados
     isDefaultUrl() {
         return this.playerManager.currentBaseUrl === config_1.config.dictionaryUrl + this.region + '/';
@@ -345,6 +351,18 @@ class VLibrasPlayer {
      */
     enableDebugMode() {
         VLibrasDevTools_1.VLibrasDevTools.enableDebugMode();
+    }
+    /**
+     * Desativa modo debug
+     */
+    disableDebugMode() {
+        VLibrasDevTools_1.VLibrasDevTools.disableDebugMode();
+    }
+    /**
+     * Verifica se está em modo debug
+     */
+    isDebugMode() {
+        return VLibrasDevTools_1.VLibrasDevTools.isDebugEnabled();
     }
     /**
      * Obtém estatísticas do player

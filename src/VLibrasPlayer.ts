@@ -26,7 +26,7 @@ export class VLibrasPlayer {
   private translator: GlosaTranslator;
   private text?: string;
   private gloss?: string;
-  private eventEmitter: VLibrasEventEmitter;
+  public eventEmitter: VLibrasEventEmitter; // Tornado público para uso nos exemplos
   private loaded: boolean = false;
   private gameContainer?: HTMLElement;
   private player?: UnityPlayer;
@@ -254,6 +254,13 @@ export class VLibrasPlayer {
     return this.region;
   }
 
+  /**
+   * Obtém o event emitter do player
+   */
+  getEventEmitter(): VLibrasEventEmitter {
+    return this.eventEmitter;
+  }
+
   // Métodos privados
   private isDefaultUrl(): boolean {
     return this.playerManager.currentBaseUrl === config.dictionaryUrl + this.region + '/';
@@ -435,6 +442,20 @@ export class VLibrasPlayer {
    */
   enableDebugMode(): void {
     VLibrasDevTools.enableDebugMode();
+  }
+
+  /**
+   * Desativa modo debug
+   */
+  disableDebugMode(): void {
+    VLibrasDevTools.disableDebugMode();
+  }
+
+  /**
+   * Verifica se está em modo debug
+   */
+  isDebugMode(): boolean {
+    return VLibrasDevTools.isDebugEnabled();
   }
 
   /**

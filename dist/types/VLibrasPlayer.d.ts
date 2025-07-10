@@ -1,4 +1,5 @@
 import { PlayerConfig, PlayerStatus, TranslateOptions, PlayOptions, PersonalizationConfig, PlaybackSpeed, SupportedRegion } from './types';
+import { VLibrasEventEmitter } from './VLibrasEvents';
 /**
  * VLibras Player - Classe principal para controle do avatar de Libras
  */
@@ -8,7 +9,7 @@ export declare class VLibrasPlayer {
     private translator;
     private text?;
     private gloss?;
-    private eventEmitter;
+    eventEmitter: VLibrasEventEmitter;
     private loaded;
     private gameContainer?;
     private player?;
@@ -77,6 +78,10 @@ export declare class VLibrasPlayer {
     getGloss(): string | undefined;
     isLoaded(): boolean;
     getRegion(): SupportedRegion;
+    /**
+     * Obtém o event emitter do player
+     */
+    getEventEmitter(): VLibrasEventEmitter;
     private isDefaultUrl;
     private getTargetScript;
     private joinUrl;
@@ -120,6 +125,14 @@ export declare class VLibrasPlayer {
      * Ativa modo debug
      */
     enableDebugMode(): void;
+    /**
+     * Desativa modo debug
+     */
+    disableDebugMode(): void;
+    /**
+     * Verifica se está em modo debug
+     */
+    isDebugMode(): boolean;
     /**
      * Obtém estatísticas do player
      */
