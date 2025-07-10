@@ -1,0 +1,43 @@
+# Arquivos que não devem ser publicados no npm
+
+# Código-fonte (apenas dist é publicado)
+src/
+*.ts
+*.map
+
+# Arquivos de desenvolvimento
+.eslintrc.js
+jest.config.js
+tsconfig.json
+webpack.config.js
+
+# Demos e testes
+demo/
+examples/
+node_modules/
+.git/
+.gitignore
+
+# Logs e cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos temporários
+.nyc_output
+coverage/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Apenas manter no package final:
+# - dist/
+# - assets/
+# - README.md
+# - LICENSE
+# - CHANGELOG.md
+# - package.json

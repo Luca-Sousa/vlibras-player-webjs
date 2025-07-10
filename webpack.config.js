@@ -1,18 +1,40 @@
-var path = require('path');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: path.resolve('./src/index.js'),
+  mode: 'production',
+  entry: './src/index.ts',
   output: {
-    filename: 'vlibras.js',
-    path: path.resolve('./build')
+    path: path.resolve(__dirname, 'dist/umd'),
+    filename: 'vlibras-player.min.js',
+    library: {
+      name: 'VLibras',
+      type: 'umd',
+      export: 'default'
+    },
+    globalObject: 'this',
+    clean: true
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
   },
   externals: {
-    'window': 'window'
+    // Não incluir dependências externas no bundle UMD
   },
-  plugins: [
-    new CopyWebpackPlugin([
-      { from: 'src/target', to: 'target' }
-    ])
-  ]
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'demo'),
+    },
+    compress: true,
+    port: 8080,
+    open: true
+  }
 };
