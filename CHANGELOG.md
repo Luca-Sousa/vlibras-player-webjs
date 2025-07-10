@@ -1,5 +1,43 @@
 # Changelog
 
+## [2.1.0] - 2025-07-10
+
+### 🚀 **Melhorias Baseadas no Feedback da Comunidade**
+
+#### ✨ Adicionado
+- **Unity Bridge Automático** - Funções globais do Unity configuradas automaticamente
+- **Sistema de Presets** - Configurações prontas para casos específicos (quiz, dicionário, tutorial, etc.)
+- **CSS Otimizado Automático** - Remove bordas pretas e otimiza canvas automaticamente  
+- **Estados Claros** - Estados mais específicos e mensagens amigáveis
+- **Responsividade Automática** - Adaptação automática para mobile/tablet/desktop
+
+#### 🔧 Funcionalidades Críticas Resolvidas
+- ✅ **Unity Bridge Manual** → Agora automático com `setupUnityBridge()`
+- ✅ **CSS/Canvas Problemático** → Otimização automática com `setupOptimizedCSS()`
+- ✅ **Estados Confusos** → Estados claros: INITIALIZING, LOADING_ASSETS, TRANSLATING, PLAYING, etc.
+- ✅ **Configuração Repetitiva** → Presets prontos: `VLibrasPresets.quiz`, `VLibrasPresets.dictionary`
+
+#### 💡 APIs Simplificadas
+```typescript
+// Unity Bridge automático
+const bridge = setupUnityBridge();
+
+// CSS otimizado automático  
+setupOptimizedCSS('.vlibras-container', {
+  fillContainer: true,
+  removeBlackBorders: true
+});
+
+// Presets para casos específicos
+const player = new VLibrasPlayer(VLibrasPresets.quiz);
+```
+
+#### 📱 Melhorias de UX
+- Estados visuais automáticos (loading, error, ready)
+- Animações suaves entre estados
+- Responsividade para todos os tamanhos de tela
+- Feedback visual inteligente
+
 ## [2.0.0] - 2025-07-10
 
 ### ✨ Added

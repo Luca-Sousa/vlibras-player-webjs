@@ -36,7 +36,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.config = exports.PlayerManagerAdapter = exports.GlosaTranslator = exports.VLibrasPlayer = void 0;
+exports.default = exports.setupOptimizedCSS = exports.VLibrasCSS = exports.usePreset = exports.VLibrasPresets = exports.isUnityBridgeReady = exports.setupUnityBridge = exports.UnityBridge = exports.config = exports.PlayerManagerAdapter = exports.GlosaTranslator = exports.VLibrasPlayer = void 0;
 // Exportações principais
 var VLibrasPlayer_1 = require("./VLibrasPlayer");
 Object.defineProperty(exports, "VLibrasPlayer", { enumerable: true, get: function () { return VLibrasPlayer_1.VLibrasPlayer; } });
@@ -46,6 +46,17 @@ var PlayerManagerAdapter_1 = require("./PlayerManagerAdapter");
 Object.defineProperty(exports, "PlayerManagerAdapter", { enumerable: true, get: function () { return PlayerManagerAdapter_1.PlayerManagerAdapter; } });
 var config_1 = require("./config");
 Object.defineProperty(exports, "config", { enumerable: true, get: function () { return config_1.config; } });
+// Novas funcionalidades baseadas no feedback
+var UnityBridge_1 = require("./UnityBridge");
+Object.defineProperty(exports, "UnityBridge", { enumerable: true, get: function () { return UnityBridge_1.UnityBridge; } });
+Object.defineProperty(exports, "setupUnityBridge", { enumerable: true, get: function () { return UnityBridge_1.setupUnityBridge; } });
+Object.defineProperty(exports, "isUnityBridgeReady", { enumerable: true, get: function () { return UnityBridge_1.isUnityBridgeReady; } });
+var VLibrasPresets_1 = require("./VLibrasPresets");
+Object.defineProperty(exports, "VLibrasPresets", { enumerable: true, get: function () { return VLibrasPresets_1.VLibrasPresets; } });
+Object.defineProperty(exports, "usePreset", { enumerable: true, get: function () { return VLibrasPresets_1.usePreset; } });
+var VLibrasCSS_1 = require("./VLibrasCSS");
+Object.defineProperty(exports, "VLibrasCSS", { enumerable: true, get: function () { return VLibrasCSS_1.VLibrasCSS; } });
+Object.defineProperty(exports, "setupOptimizedCSS", { enumerable: true, get: function () { return VLibrasCSS_1.setupOptimizedCSS; } });
 // Exportações de tipos
 __exportStar(require("./types"), exports);
 // Exportação padrão para compatibilidade
@@ -55,7 +66,10 @@ Object.defineProperty(exports, "default", { enumerable: true, get: function () {
 if (typeof window !== 'undefined') {
     Promise.resolve().then(() => __importStar(require('./VLibrasPlayer'))).then(({ VLibrasPlayer }) => {
         window.VLibras = {
-            Player: VLibrasPlayer
+            Player: VLibrasPlayer,
+            Presets: () => Promise.resolve().then(() => __importStar(require('./VLibrasPresets'))).then(m => m.VLibrasPresets),
+            CSS: () => Promise.resolve().then(() => __importStar(require('./VLibrasCSS'))).then(m => m.VLibrasCSS),
+            Bridge: () => Promise.resolve().then(() => __importStar(require('./UnityBridge'))).then(m => m.UnityBridge)
         };
     });
 }

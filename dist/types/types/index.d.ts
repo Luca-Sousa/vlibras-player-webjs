@@ -12,13 +12,50 @@ export interface PlayerConfig {
     progress?: (wrapper: HTMLElement) => any;
 }
 /**
- * Status possíveis do player
+ * Estados melhorados baseados no feedback do FUNCOES-UTILITARIAS-VLIBRAS.md
+ *
+ * Estados mais claros e específicos para melhor UX
  */
 export declare enum PlayerStatus {
     IDLE = "idle",
-    PREPARING = "preparing",
-    PLAYING = "playing"
+    INITIALIZING = "initializing",// Inicializando biblioteca
+    LOADING_ASSETS = "loading_assets",// Carregando assets do Unity
+    READY = "ready",// Pronto para usar
+    TRANSLATING = "translating",// Convertendo texto para glosa
+    PLAYING = "playing",// Reproduzindo animação
+    PAUSED = "paused",// Pausado
+    COMPLETED = "completed",// Animação terminada
+    ERROR = "error"
 }
+/**
+ * Evento de mudança de estado com informações detalhadas
+ */
+export interface StateChangeEvent {
+    state: PlayerStatus;
+    previousState: PlayerStatus;
+    progress?: number;
+    message?: string;
+    timestamp: number;
+    details?: any;
+}
+/**
+ * Configuração de mensagens amigáveis para cada estado
+ */
+export interface StateMessages {
+    [PlayerStatus.IDLE]: string;
+    [PlayerStatus.INITIALIZING]: string;
+    [PlayerStatus.LOADING_ASSETS]: string;
+    [PlayerStatus.READY]: string;
+    [PlayerStatus.TRANSLATING]: string;
+    [PlayerStatus.PLAYING]: string;
+    [PlayerStatus.PAUSED]: string;
+    [PlayerStatus.COMPLETED]: string;
+    [PlayerStatus.ERROR]: string;
+}
+/**
+ * Mensagens padrão em português
+ */
+export declare const DEFAULT_STATE_MESSAGES: StateMessages;
 /**
  * Opções para tradução
  */

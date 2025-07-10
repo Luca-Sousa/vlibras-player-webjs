@@ -117,7 +117,7 @@ class VLibrasPlayer {
         }
         this.gloss = gloss || this.gloss;
         if (this.gloss !== undefined && this.loaded) {
-            this.changeStatus(types_1.PlayerStatus.PREPARING);
+            this.changeStatus(types_1.PlayerStatus.INITIALIZING);
             this.playerManager.play(this.gloss);
         }
     }
@@ -245,11 +245,11 @@ class VLibrasPlayer {
                     this.onGlossEnd(this.globalGlossLength);
                 }
                 break;
-            case types_1.PlayerStatus.PREPARING:
+            case types_1.PlayerStatus.INITIALIZING:
                 this.status = status;
                 break;
             case types_1.PlayerStatus.PLAYING:
-                if (this.status === types_1.PlayerStatus.PREPARING) {
+                if (this.status === types_1.PlayerStatus.INITIALIZING) {
                     this.status = status;
                     this.onGlossStart();
                 }
