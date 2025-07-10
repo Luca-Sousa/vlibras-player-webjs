@@ -57,6 +57,11 @@ Object.defineProperty(exports, "usePreset", { enumerable: true, get: function ()
 var VLibrasCSS_1 = require("./VLibrasCSS");
 Object.defineProperty(exports, "VLibrasCSS", { enumerable: true, get: function () { return VLibrasCSS_1.VLibrasCSS; } });
 Object.defineProperty(exports, "setupOptimizedCSS", { enumerable: true, get: function () { return VLibrasCSS_1.setupOptimizedCSS; } });
+// Novas funcionalidades críticas implementadas
+__exportStar(require("./VLibrasEvents"), exports);
+__exportStar(require("./VLibrasDevTools"), exports);
+__exportStar(require("./VLibrasGlobalConfig"), exports);
+__exportStar(require("./VLibrasCache"), exports);
 // Exportações de tipos
 __exportStar(require("./types"), exports);
 // Exportação padrão para compatibilidade

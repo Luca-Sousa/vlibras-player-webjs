@@ -1,5 +1,98 @@
 # Changelog
 
+## [2.2.0] - 2025-01-10
+
+### ✨ **Sistema Avançado - Funcionalidades Críticas Implementadas**
+
+#### 🎯 **Sistema de Eventos Type-Safe**
+- **VLibrasEventEmitter**: Sistema completo de eventos padronizado e type-safe
+- **Eventos detalhados**: player:ready, translation:start/complete, animation:progress, cache:hit/miss, performance:slow
+- **Utilitários**: waitForEvent, debounceEvent para otimização de performance
+- **Type-safety**: IntelliSense completo para todos os eventos
+
+#### 🔧 **DevTools e Diagnósticos**
+- **VLibrasDevTools**: Ferramentas completas de desenvolvimento e debugging
+- **Diagnósticos automáticos**: WebGL, assets, performance, compatibilidade de browser
+- **Profiling de performance**: Medição automática de operações críticas
+- **Debug mode**: Logs estruturados e monitoramento em tempo real
+- **Decorador @measurePerformance**: Medição automática de performance de métodos
+
+#### ⚙️ **Sistema de Configuração Global**
+- **VLibrasGlobalConfig**: Configuração centralizada para toda aplicação
+- **Auto-detecção**: Configuração otimizada baseada no dispositivo/browser
+- **Persistência**: Salvamento automático no localStorage
+- **Temas**: Suporte para light/dark/auto/high-contrast
+- **Acessibilidade**: Configurações automáticas de accessibility
+
+#### 💾 **Cache Inteligente**
+- **VLibrasCache**: Sistema híbrido (memory + localStorage + IndexedDB)
+- **Estratégias**: cache-first, network-first, cache-only
+- **Cache preditivo**: Preload de palavras relacionadas
+- **Cache por contexto**: Otimizações para quiz, dicionário, tutorial
+- **Compressão**: Redução automática de tamanho dos dados
+- **TTL e LRU**: Gerenciamento inteligente de expiração e memória
+
+#### 🚀 **APIs Melhoradas no VLibrasPlayer**
+```typescript
+// Sistema de eventos
+player.on('translation:start', (data) => console.log('Traduzindo...'));
+player.on('animation:complete', (data) => console.log('Animação concluída!'));
+
+// Diagnósticos
+const diagnostics = await player.runDiagnostics();
+player.enableDebugMode();
+
+// Configuração automática
+player.setupUnityBridge();
+player.setupOptimizedCSS();
+```
+
+#### 📊 **Estatísticas e Métricas**
+- **Cache statistics**: Hit rate, tamanho, número de entradas
+- **Performance stats**: Tempo de carregamento, FPS, uso de memória
+- **Compatibility checks**: Suporte do browser, WebGL, disponibilidade de assets
+
+#### 🛠️ **Utilitários Avançados**
+- **Auto-configuração**: Detecção automática da configuração ideal para o dispositivo
+- **Migração de cache**: Suporte para atualizações de versão
+- **Logging estruturado**: Sistema de logs com níveis (debug, info, warn, error)
+- **Event utilities**: Debounce, throttle, waitForEvent para otimização
+
+#### 🎨 **Melhorias de UX**
+- **Estados detalhados**: Feedback claro sobre todas as operações
+- **Debug visual**: Overlays e indicadores para desenvolvimento
+- **Performance monitoring**: Alertas automáticos para problemas de performance
+
+### 📝 **Como Usar as Novas Funcionalidades**
+
+```typescript
+import { VLibrasPlayer, VLibrasGlobalConfig, VLibrasDevTools } from 'vlibras-player-webjs';
+
+// Configuração global
+VLibrasGlobalConfig.configure({
+  debug: true,
+  performance: { cacheEnabled: true, maxCacheSize: 50 },
+  accessibility: { keyboardNavigation: true }
+});
+
+// Player com eventos
+const player = new VLibrasPlayer();
+
+player.on('player:ready', () => console.log('Player pronto!'));
+player.on('translation:complete', (data) => console.log(`Tradução: ${data.gloss}`));
+
+// Diagnósticos
+const diagnostics = await player.runDiagnostics();
+if (!diagnostics.webgl.supported) {
+  console.warn('WebGL não suportado');
+}
+
+// Debug mode
+player.enableDebugMode();
+```
+
+---
+
 ## [2.1.0] - 2025-07-10
 
 ### 🚀 **Melhorias Baseadas no Feedback da Comunidade**

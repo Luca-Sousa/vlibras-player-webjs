@@ -97,9 +97,10 @@ export interface AnimationProgress {
     elapsed: number;
 }
 /**
- * Eventos emitidos pelo player
+ * Eventos legacy - mantidos para compatibilidade
+ * Para novos projetos, use PlayerEvents de VLibrasEvents.ts
  */
-export interface PlayerEvents {
+export interface LegacyPlayerEvents {
     /** Player foi carregado e está pronto */
     'load': () => void;
     /** Iniciou tradução */

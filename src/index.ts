@@ -9,6 +9,12 @@ export { UnityBridge, setupUnityBridge, isUnityBridgeReady } from './UnityBridge
 export { VLibrasPresets, usePreset } from './VLibrasPresets';
 export { VLibrasCSS, setupOptimizedCSS } from './VLibrasCSS';
 
+// Novas funcionalidades críticas implementadas
+export * from './VLibrasEvents';
+export * from './VLibrasDevTools';
+export * from './VLibrasGlobalConfig';
+export * from './VLibrasCache';
+
 // Exportações de tipos
 export * from './types';
 

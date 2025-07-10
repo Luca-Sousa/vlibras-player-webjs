@@ -8,6 +8,7 @@ export declare class VLibrasPlayer {
     private translator;
     private text?;
     private gloss?;
+    private eventEmitter;
     private loaded;
     private gameContainer?;
     private player?;
@@ -95,5 +96,39 @@ export declare class VLibrasPlayer {
     protected onStartWelcome(): void;
     protected onStopWelcome(_finished: boolean): void;
     protected onError(error: string): void;
+    /**
+     * Adiciona listener para eventos do player
+     */
+    on<K extends keyof import('./VLibrasEvents').PlayerEvents>(event: K, listener: (data: import('./VLibrasEvents').PlayerEvents[K]) => void): () => void;
+    /**
+     * Remove listener de evento
+     */
+    off<K extends keyof import('./VLibrasEvents').PlayerEvents>(event: K, listener: (data: import('./VLibrasEvents').PlayerEvents[K]) => void): void;
+    /**
+     * Configura Unity Bridge automaticamente
+     */
+    setupUnityBridge(): void;
+    /**
+     * Aplica CSS otimizado automaticamente
+     */
+    setupOptimizedCSS(containerSelector?: string): void;
+    /**
+     * Executa diagnósticos do sistema
+     */
+    runDiagnostics(): Promise<import("./VLibrasDevTools").DiagnosticResult>;
+    /**
+     * Ativa modo debug
+     */
+    enableDebugMode(): void;
+    /**
+     * Obtém estatísticas do player
+     */
+    getStats(): {
+        status: PlayerStatus;
+        loaded: boolean;
+        region: SupportedRegion;
+        text: string | undefined;
+        gloss: string | undefined;
+    };
 }
 //# sourceMappingURL=VLibrasPlayer.d.ts.map

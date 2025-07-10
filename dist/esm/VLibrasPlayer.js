@@ -2,6 +2,10 @@ import { config } from './config';
 import { PlayerManagerAdapter } from './PlayerManagerAdapter';
 import { GlosaTranslator } from './GlosaTranslator';
 import { PlayerStatus } from './types';
+import { setupUnityBridge } from './UnityBridge';
+import { setupOptimizedCSS } from './VLibrasCSS';
+import { VLibrasEventEmitter } from './VLibrasEvents';
+import { VLibrasDevTools } from './VLibrasDevTools';
 /**
  * VLibras Player - Classe principal para controle do avatar de Libras
  */
@@ -19,6 +23,7 @@ export class VLibrasPlayer {
         };
         this.playerManager = new PlayerManagerAdapter();
         this.translator = new GlosaTranslator(this.options.translator);
+        this.eventEmitter = new VLibrasEventEmitter();
         this.setupPlayerManagerEvents();
     }
     /**
@@ -295,6 +300,60 @@ export class VLibrasPlayer {
     }
     onError(error) {
         console.error('VLibras Player Error:', error);
+        this.eventEmitter.emit('player:error', {
+            error: new Error(error),
+            player: this,
+            timestamp: Date.now()
+        });
+    }
+    // === NOVAS FUNCIONALIDADES v2.1.0 ===
+    /**
+     * Adiciona listener para eventos do player
+     */
+    on(event, listener) {
+        return this.eventEmitter.on(event, listener);
+    }
+    /**
+     * Remove listener de evento
+     */
+    off(event, listener) {
+        this.eventEmitter.off(event, listener);
+    }
+    /**
+     * Configura Unity Bridge automaticamente
+     */
+    setupUnityBridge() {
+        setupUnityBridge();
+    }
+    /**
+     * Aplica CSS otimizado automaticamente
+     */
+    setupOptimizedCSS(containerSelector) {
+        setupOptimizedCSS(containerSelector);
+    }
+    /**
+     * Executa diagnósticos do sistema
+     */
+    async runDiagnostics() {
+        return await VLibrasDevTools.runDiagnostics();
+    }
+    /**
+     * Ativa modo debug
+     */
+    enableDebugMode() {
+        VLibrasDevTools.enableDebugMode();
+    }
+    /**
+     * Obtém estatísticas do player
+     */
+    getStats() {
+        return {
+            status: this.status,
+            loaded: this.loaded,
+            region: this.region,
+            text: this.text,
+            gloss: this.gloss
+        };
     }
 }
 //# sourceMappingURL=VLibrasPlayer.js.map
