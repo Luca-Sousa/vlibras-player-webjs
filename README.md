@@ -30,20 +30,20 @@ Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player
 
 ```bash
 # npm
-npm install @vlibras/player-webjs
+npm install vlibras-player-webjs
 
 # yarn
-yarn add @vlibras/player-webjs
+yarn add vlibras-player-webjs
 
 # pnpm
-pnpm add @vlibras/player-webjs
+pnpm add vlibras-player-webjs
 ```
 
 ## 🚀 Uso Rápido
 
 ### JavaScript/ES6
 ```javascript
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 const player = new VLibrasPlayer({
   targetPath: './assets/vlibras'
@@ -59,7 +59,7 @@ player.translate('Olá! Bem-vindo ao nosso site.');
 
 ### TypeScript
 ```typescript
-import { VLibrasPlayer, PlayerConfig, PlayerStatus } from '@vlibras/player-webjs';
+import { VLibrasPlayer, PlayerConfig, PlayerStatus } from 'vlibras-player-webjs';
 
 const config: PlayerConfig = {
   targetPath: './assets/vlibras',
@@ -76,7 +76,7 @@ player.translate('Texto para traduzir', { isEnabledStats: true });
 ### React (18 e 19)
 ```jsx
 import React, { useEffect, useRef } from 'react';
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 function VLibrasComponent() {
   const containerRef = useRef(null);
@@ -115,7 +115,7 @@ function VLibrasComponent() {
 #### Hook Customizado para React 19
 ```jsx
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 function useVLibras(config = {}) {
   const containerRef = useRef(null);
@@ -163,7 +163,7 @@ function useVLibras(config = {}) {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 const vlibrasContainer = ref(null);
 let player = null;
@@ -193,7 +193,7 @@ const translateText = () => {
 ```typescript
 // vlibras.component.ts
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 @Component({
   selector: 'app-vlibras',
@@ -352,7 +352,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { 
-          from: 'node_modules/@vlibras/player-webjs/assets', 
+          from: 'node_modules/vlibras-player-webjs/assets', 
           to: 'assets/vlibras' 
         }
       ]

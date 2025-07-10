@@ -1,5 +1,5 @@
 {
-  "name": "@vlibras/player-webjs",
+  "name": "vlibras-player-webjs",
   "version": "2.0.0",
   "description": "Biblioteca JavaScript moderna para integração do VLibras Player em aplicações web",
   "keywords": [

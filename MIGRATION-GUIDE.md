@@ -92,11 +92,11 @@ npm publish --access public
 
 ### 3. Uso pelos desenvolvedores
 ```bash
-npm install @vlibras/player-webjs
+npm install vlibras-player-webjs
 ```
 
 ```javascript
-import { VLibrasPlayer } from '@vlibras/player-webjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs';
 
 const player = new VLibrasPlayer();
 player.load(document.getElementById('vlibras'));
@@ -107,7 +107,7 @@ player.translate('Olá mundo!');
 
 ### Fase 1: Coexistência
 - Mantenha a versão CDN atual
-- Publique a versão npm como @vlibras/player-webjs@2.0.0
+- Publique a versão npm como vlibras-player-webjs@2.0.0
 - Desenvolvedores podem escolher
 
 ### Fase 2: Adoçãogit add .

@@ -24,7 +24,7 @@
 - **Manutenibilidade** - Código tipado e testado
 
 ### 📦 Package
-- Publicado como `@vlibras/player-webjs`
+- Publicado como `vlibras-player-webjs`
 - Suporte a Node.js >= 16.0.0
 - Compatível com bundlers modernos (Webpack, Vite, Rollup)
 
