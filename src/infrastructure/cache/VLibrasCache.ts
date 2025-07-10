@@ -386,26 +386,104 @@ export class VLibrasCache {
   }
 
   /**
+   * Remove do localStorage
+   */
+  private deleteFromLocalStorage(key: string): boolean {
+    try {
+      const fullKey = `vlibras:${key}`;
+      if (localStorage.getItem(fullKey)) {
+        localStorage.removeItem(fullKey);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.warn('Erro ao remover do localStorage:', error);
+      return false;
+    }
+  }
+
+  /**
    * Armazena no IndexedDB
    */
-  private async storeInIndexedDB<T>(_entry: CacheEntry<T>): Promise<void> {
-    // TODO: Implementar IndexedDB storage
-    console.log('IndexedDB storage não implementado ainda');
+  private async storeInIndexedDB<T>(entry: CacheEntry<T>): Promise<void> {
+    try {
+      const db = await this.openIndexedDB();
+      const transaction = db.transaction(['vlibras_cache'], 'readwrite');
+      const store = transaction.objectStore('vlibras_cache');
+      
+      await new Promise<void>((resolve, reject) => {
+        const request = store.put(entry, entry.key);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    } catch (error) {
+      console.warn('Erro ao armazenar no IndexedDB:', error);
+      // Fallback para localStorage
+      await this.storeInLocalStorage(entry);
+    }
   }
 
   /**
    * Recupera do IndexedDB
    */
-  private async retrieveFromIndexedDB<T>(_key: string): Promise<CacheEntry<T> | null> {
-    // TODO: Implementar IndexedDB retrieval
-    return null;
+  private async retrieveFromIndexedDB<T>(key: string): Promise<CacheEntry<T> | null> {
+    try {
+      const db = await this.openIndexedDB();
+      const transaction = db.transaction(['vlibras_cache'], 'readonly');
+      const store = transaction.objectStore('vlibras_cache');
+      
+      return new Promise<CacheEntry<T> | null>((resolve, reject) => {
+        const request = store.get(key);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+    } catch (error) {
+      console.warn('Erro ao recuperar do IndexedDB:', error);
+      // Fallback para localStorage
+      return this.retrieveFromLocalStorage<T>(key);
+    }
   }
 
   /**
    * Remove do IndexedDB
    */
-  private async deleteFromIndexedDB(_key: string): Promise<void> {
-    // TODO: Implementar IndexedDB deletion
+  private async deleteFromIndexedDB(key: string): Promise<void> {
+    try {
+      const db = await this.openIndexedDB();
+      const transaction = db.transaction(['vlibras_cache'], 'readwrite');
+      const store = transaction.objectStore('vlibras_cache');
+      
+      await new Promise<void>((resolve, reject) => {
+        const request = store.delete(key);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    } catch (error) {
+      console.warn('Erro ao remover do IndexedDB:', error);
+      // Fallback para localStorage
+      this.deleteFromLocalStorage(key);
+    }
+  }
+
+  /**
+   * Abre conexão com IndexedDB
+   */
+  private async openIndexedDB(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('vlibras_cache_db', 1);
+      
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+        if (!db.objectStoreNames.contains('vlibras_cache')) {
+          const store = db.createObjectStore('vlibras_cache');
+          store.createIndex('timestamp', 'timestamp', { unique: false });
+          store.createIndex('ttl', 'ttl', { unique: false });
+        }
+      };
+      
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
   }
 
   /**

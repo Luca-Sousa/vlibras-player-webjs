@@ -115,6 +115,10 @@ export class VLibrasPlayer {
     const { isEnabledStats = true } = options;
     
     this.onTranslateStart();
+    this.eventEmitter.emit('translation:start', { 
+      text, 
+      timestamp: Date.now() 
+    });
 
     if (this.loaded) {
       this.stop();
@@ -124,6 +128,12 @@ export class VLibrasPlayer {
 
     const callback: TranslationCallback = (gloss, error) => {
       if (error) {
+        this.eventEmitter.emit('translation:error', { 
+          error, 
+          text, 
+          timestamp: Date.now() 
+        });
+        
         if (error === 'timeout_error') {
           this.onError('timeout_error');
         } else {
@@ -133,11 +143,20 @@ export class VLibrasPlayer {
       }
 
       if (gloss) {
+        this.eventEmitter.emit('translation:complete', { 
+          gloss, 
+          duration: Date.now() - (this.eventEmitter as any).lastTranslationStart || 0,
+          timestamp: Date.now() 
+        });
+        
         this.play(gloss, { fromTranslation: true, isEnabledStats });
       }
+      
       this.onTranslateEnd();
     };
 
+    // Guardar timestamp para calcular duração
+    (this.eventEmitter as any).lastTranslationStart = Date.now();
     this.translator.translate(text, window.location.host, callback);
   }
 
@@ -158,6 +177,12 @@ export class VLibrasPlayer {
 
     if (this.gloss !== undefined && this.loaded) {
       this.changeStatus(PlayerStatus.INITIALIZING);
+      // Guardar timestamp para calcular duração da animação
+      (this.eventEmitter as any).lastAnimationStart = Date.now();
+      this.eventEmitter.emit('animation:start', { 
+        gloss: this.gloss, 
+        timestamp: Date.now() 
+      });
       this.playerManager.play(this.gloss);
     }
   }
@@ -355,19 +380,31 @@ export class VLibrasPlayer {
   }
 
   protected onAnimationPlay(): void {
-    // Implementação padrão vazia - pode ser sobrescrita
+    this.eventEmitter.emit('animation:resume', { 
+      timestamp: Date.now() 
+    });
   }
 
   protected onAnimationPause(): void {
-    // Implementação padrão vazia - pode ser sobrescrita
+    this.eventEmitter.emit('animation:pause', { 
+      timestamp: Date.now() 
+    });
   }
 
   protected onAnimationEnd(): void {
-    // Implementação padrão vazia - pode ser sobrescrita
+    this.eventEmitter.emit('animation:complete', { 
+      duration: Date.now() - ((this.eventEmitter as any).lastAnimationStart || Date.now()),
+      totalFrames: 0, // TODO: Obter do Unity se possível
+      timestamp: Date.now() 
+    });
   }
 
-  protected onAnimationProgress(_progress: number): void {
-    // Implementação padrão vazia - pode ser sobrescrita
+  protected onAnimationProgress(progress: number): void {
+    this.eventEmitter.emit('animation:progress', { 
+      progress, 
+      currentFrame: Math.floor(progress * 10), // Estimativa
+      timestamp: Date.now() 
+    });
   }
 
   protected onGlossResponse(_counter: number, _glossLength: string): void {
@@ -640,5 +677,37 @@ export class VLibrasPlayer {
         reject(data.error);
       });
     });
+  }
+
+  /**
+   * Destrói o player e limpa recursos
+   */
+  destroy(): void {
+    // Para reprodução se estiver ativa
+    if (this.status === PlayerStatus.PLAYING) {
+      this.stop();
+    }
+
+    // Remove elemento do Unity do DOM
+    if (this.gameContainer && this.gameContainer.parentNode) {
+      this.gameContainer.parentNode.removeChild(this.gameContainer);
+    }
+
+    // Limpa referências
+    this.gameContainer = undefined;
+    this.player = undefined;
+    this.loaded = false;
+    this.status = PlayerStatus.IDLE;
+
+    // Emite evento de destruição
+    this.eventEmitter.emit('player:destroy', { 
+      player: this, 
+      timestamp: Date.now() 
+    });
+
+    // Remove todos os listeners de eventos
+    this.eventEmitter.removeAllListeners();
+
+    console.log('🗑️ VLibras Player destruído e recursos limpos');
   }
 }
