@@ -34,7 +34,7 @@ const loadReactHooks = () => {
 
 export interface UseVLibrasOptions {
   autoLoad?: boolean;
-  preset?: string;
+  preset?: 'dictionary' | 'quiz' | 'tutorial' | 'compact' | 'presentation' | 'accessibility' | 'development';
   theme?: 'light' | 'dark' | 'high-contrast' | 'auto';
   onReady?: () => void;
   onError?: (error: Error) => void;
@@ -83,7 +83,7 @@ export function useVLibras(options: UseVLibrasOptions = {}): UseVLibrasReturn {
 
         // Aplicar preset se especificado
         if (options.preset) {
-          const presetConfig = VLibrasPresets.getPreset(options.preset);
+          const presetConfig = (VLibrasPresets as any)[options.preset];
           if (presetConfig) {
             playerConfig = { ...presetConfig, ...playerConfig };
           }

@@ -24,8 +24,7 @@ export * from './infrastructure/styling/VLibrasThemes';
 export * from './infrastructure/canvas/VLibrasCanvasConfig';
 // === FEATURES (Funcionalidades Específicas) ===
 // Sistema de presets
-export { VLibrasPresets, usePreset } from './features/presets/VLibrasPresets';
-export * from './features/presets/VLibrasPresetsAdvanced';
+export { VLibrasPresets, usePreset, useVLibrasPreset } from './features/presets/VLibrasPresets';
 // Sistema de plugins
 export * from './features/plugins/VLibrasPlugins';
 // Ferramentas de desenvolvimento

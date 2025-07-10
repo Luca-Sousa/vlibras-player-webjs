@@ -10,5 +10,6 @@ export { PlayerManagerAdapter } from './PlayerManagerAdapter';
 export type {
   VLibrasPlayerConfig,
   VLibrasPlayerState,
-  PlaybackResult
+  PlaybackResult,
+  PresetConfig
 } from '../../types/core.types';

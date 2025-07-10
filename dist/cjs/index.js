@@ -18,7 +18,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_STATE_MESSAGES = exports.PlayerStatus = exports.usePreset = exports.VLibrasPresets = exports.setupOptimizedCSS = exports.VLibrasCSS = exports.VLibrasGlobalConfig = exports.config = exports.isUnityBridgeReady = exports.setupUnityBridge = exports.UnityBridge = exports.GlosaTranslator = exports.PlayerManagerAdapter = exports.VLibrasPlayer = void 0;
+exports.DEFAULT_STATE_MESSAGES = exports.PlayerStatus = exports.useVLibrasPreset = exports.usePreset = exports.VLibrasPresets = exports.setupOptimizedCSS = exports.VLibrasCSS = exports.VLibrasGlobalConfig = exports.config = exports.isUnityBridgeReady = exports.setupUnityBridge = exports.UnityBridge = exports.GlosaTranslator = exports.PlayerManagerAdapter = exports.VLibrasPlayer = void 0;
 // === CORE (Núcleo do Sistema) ===
 // Player principal
 var VLibrasPlayer_1 = require("./core/player/VLibrasPlayer");
@@ -54,7 +54,7 @@ __exportStar(require("./infrastructure/canvas/VLibrasCanvasConfig"), exports);
 var VLibrasPresets_1 = require("./features/presets/VLibrasPresets");
 Object.defineProperty(exports, "VLibrasPresets", { enumerable: true, get: function () { return VLibrasPresets_1.VLibrasPresets; } });
 Object.defineProperty(exports, "usePreset", { enumerable: true, get: function () { return VLibrasPresets_1.usePreset; } });
-__exportStar(require("./features/presets/VLibrasPresetsAdvanced"), exports);
+Object.defineProperty(exports, "useVLibrasPreset", { enumerable: true, get: function () { return VLibrasPresets_1.useVLibrasPreset; } });
 // Sistema de plugins
 __exportStar(require("./features/plugins/VLibrasPlugins"), exports);
 // Ferramentas de desenvolvimento

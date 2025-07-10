@@ -3,8 +3,7 @@
  * Open/Closed Principle: Sistema extensível de presets
  */
 
-export { VLibrasPresets, usePreset } from './VLibrasPresets';
-export * from './VLibrasPresetsAdvanced';
+export { VLibrasPresets, usePreset, useVLibrasPreset } from './VLibrasPresets';
 
 // Re-export de tipos específicos de presets
 export type {

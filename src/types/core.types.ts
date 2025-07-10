@@ -29,6 +29,43 @@ export interface VLibrasPlayerConfig {
   onError?: (error: Error) => void;
 }
 
+/**
+ * Configurações específicas para presets
+ */
+export interface PresetConfig extends VLibrasPlayerConfig {
+  // Configurações específicas do preset
+  name?: string;
+  description?: string;
+  
+  // Configurações de UI
+  autoPlay?: boolean;
+  showControls?: boolean;
+  showProgress?: boolean;
+  showWordBadge?: boolean;
+  allowReplay?: boolean;
+  hideText?: boolean;
+  allowSkip?: boolean;
+  showSubtitles?: boolean;
+  minimalUI?: boolean;
+  autoScale?: boolean;
+  showQualitySelector?: boolean;
+  showEssentialControlsOnly?: boolean;
+  
+  // Configurações de tamanho
+  size?: 'small' | 'medium' | 'large' | 'fullscreen';
+  
+  // Callbacks específicos
+  onComplete?: () => void;
+  onProgress?: (progress: number) => void;
+  onStateChange?: (state: string) => void;
+  onSkip?: () => void;
+  
+  // Configurações avançadas
+  enableKeyboardShortcuts?: boolean;
+  enableAnalytics?: boolean;
+  cacheEnabled?: boolean;
+}
+
 export interface VLibrasPlayerState {
   isLoaded: boolean;
   isPlaying: boolean;
