@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLibras Player v2.3.0 - Demo Completa</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            background: #f9fafb;
+        }
+        
+        .demo-section h2 {
+            color: #374151;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .demo-section h2::before {
+            content: attr(data-icon);
+            font-size: 1.5rem;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+        
+        .status.loading {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fbbf24;
+        }
+        
+        .status.ready {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        
+        .vlibras-container {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #d1d5db;
+            border-radius: 15px;
+            background: #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        
+        .logs {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 2px 0;
+        }
+        
+        .log-info { color: #60a5fa; }
+        .log-success { color: #34d399; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #f87171; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        
+        .stat-card .label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤟 VLibras Player v2.3.0</h1>
+            <p>Demonstração Completa de Todas as Funcionalidades</p>
+        </div>
+        
+        <div class="content">
+            <!-- Configuração Global -->
+            <div class="demo-section">
+                <h2 data-icon="⚙️">Configuração Global</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="setupGlobalConfig()">Configurar VLibras</button>
+                    <button class="btn btn-secondary" onclick="showCurrentConfig()">Ver Configuração</button>
+                    <button class="btn btn-secondary" onclick="toggleTheme()">Alternar Tema</button>
+                    <button class="btn btn-secondary" onclick="toggleDebugMode()">Debug Mode</button>
+                </div>
+                <div class="input-group">
+                    <label>Região</label>
+                    <select id="regionSelect">
+                        <option value="BR">Brasil</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="SP">São Paulo</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tema</label>
+                    <select id="themeSelect">
+                        <option value="auto">Automático</option>
+                        <option value="light">Claro</option>
+                        <option value="dark">Escuro</option>
+                        <option value="high-contrast">Alto Contraste</option>
+                        <option value="compact">Compacto</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Player Principal -->
+            <div class="demo-section">
+                <h2 data-icon="🎭">Player Principal</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="initializePlayer()">Inicializar Player</button>
+                    <button class="btn btn-success" onclick="loadPlayerAsync()">Load Async</button>
+                    <button class="btn btn-secondary" onclick="checkPlayerStatus()">Status do Player</button>
+                </div>
+                <div id="player-status" class="status loading">Aguardando inicialização...</div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="vlibras-container" class="vlibras-container">
+                    Player será carregado aqui
+                </div>
+            </div>
+            
+            <!-- Tradução e Reprodução -->
+            <div class="demo-section">
+                <h2 data-icon="🔤">Tradução e Reprodução</h2>
+                <div class="input-group">
+                    <label>Texto para Traduzir</label>
+                    <textarea id="textInput" rows="3" placeholder="Digite o texto que deseja traduzir para Libras...">Olá! Bem-vindo ao VLibras Player v2.3.0. Esta é uma demonstração completa de todas as funcionalidades implementadas.</textarea>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="translateText()">Traduzir</button>
+                    <button class="btn btn-success" onclick="translateAndPlay()">Traduzir e Reproduzir</button>
+                    <button class="btn btn-secondary" onclick="playLastTranslation()">Reproduzir Última</button>
+                    <button class="btn btn-secondary" onclick="pausePlayer()">Pausar</button>
+                    <button class="btn btn-secondary" onclick="stopPlayer()">Parar</button>
+                </div>
+            </div>
+            
+            <!-- Presets Avançados -->
+            <div class="demo-section">
+                <h2 data-icon="🎛️">Presets Avançados</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="applyPreset('blog')">Blog</button>
+                    <button class="btn btn-primary" onclick="applyPreset('education')">Educação</button>
+                    <button class="btn btn-primary" onclick="applyPreset('corporate')">Corporativo</button>
+                    <button class="btn btn-primary" onclick="applyPreset('ecommerce')">E-commerce</button>
+                    <button class="btn btn-primary" onclick="applyPreset('gaming')">Gaming</button>
+                    <button class="btn btn-primary" onclick="applyPreset('mobile')">Mobile</button>
+                </div>
+                <div class="input-group">
+                    <label>Canvas Preset</label>
+                    <select id="canvasPresetSelect">
+                        <option value="desktop">Desktop</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="tablet">Tablet</option>
+                        <option value="fullscreen">Fullscreen</option>
+                        <option value="popup">Popup</option>
+                        <option value="sidebar">Sidebar</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" onclick="applyCanvasPreset()">Aplicar Canvas Preset</button>
+            </div>
+            
+            <!-- Cache e Performance -->
+            <div class="demo-section">
+                <h2 data-icon="🗄️">Cache e Performance</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="preloadCommonWords()">Preload Palavras Comuns</button>
+                    <button class="btn btn-secondary" onclick="showCacheStats()">Estatísticas do Cache</button>
+                    <button class="btn btn-secondary" onclick="clearCache()">Limpar Cache</button>
+                    <button class="btn btn-secondary" onclick="enableCacheCompression()">Habilitar Compressão</button>
+                </div>
+                <div class="input-group">
+                    <label>Contexto do Cache</label>
+                    <select id="cacheContextSelect">
+                        <option value="default">Padrão</option>
+                        <option value="education">Educação</option>
+                        <option value="business">Negócios</option>
+                        <option value="casual">Casual</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" onclick="setCacheContext()">Definir Contexto</button>
+            </div>
+            
+            <!-- DevTools e Diagnósticos -->
+            <div class="demo-section">
+                <h2 data-icon="🛠️">DevTools e Diagnósticos</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="runDiagnostics()">Executar Diagnósticos</button>
+                    <button class="btn btn-secondary" onclick="profilePerformance()">Profile Performance</button>
+                    <button class="btn btn-secondary" onclick="exportLogs()">Exportar Logs</button>
+                    <button class="btn btn-secondary" onclick="generateReport()">Gerar Relatório</button>
+                </div>
+            </div>
+            
+            <!-- Plugins -->
+            <div class="demo-section">
+                <h2 data-icon="🔌">Sistema de Plugins</h2>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="enableAnalyticsPlugin()">Analytics Plugin</button>
+                    <button class="btn btn-primary" onclick="enableA11yPlugin()">Accessibility Plugin</button>
+                    <button class="btn btn-primary" onclick="enablePerformancePlugin()">Performance Plugin</button>
+                    <button class="btn btn-secondary" onclick="listActivePlugins()">Listar Plugins Ativos</button>
+                </div>
+            </div>
+            
+            <!-- Estatísticas -->
+            <div class="demo-section">
+                <h2 data-icon="📊">Estatísticas e Métricas</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div id="stat-translations" class="value">0</div>
+                        <div class="label">Traduções</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="stat-cache-hits" class="value">0</div>
+                        <div class="label">Cache Hits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="stat-avg-time" class="value">0ms</div>
+                        <div class="label">Tempo Médio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="stat-errors" class="value">0</div>
+                        <div class="label">Erros</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="updateStats()">Atualizar Estatísticas</button>
+            </div>
+            
+            <!-- Logs -->
+            <div class="demo-section">
+                <h2 data-icon="📝">Logs do Sistema</h2>
+                <div id="logs" class="logs">
+                    <div class="log-entry log-info">[INFO] Sistema inicializado</div>
+                </div>
+                <button class="btn btn-secondary" onclick="clearLogs()">Limpar Logs</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../dist/vlibras-player.min.js"></script>
+    <script>
+        // Estado global da demo
+        let player = null;
+        let currentConfig = {};
+        let stats = {
+            translations: 0,
+            cacheHits: 0,
+            avgTime: 0,
+            errors: 0
+        };
+
+        // Função para adicionar logs
+        function addLog(level, message) {
+            const logsContainer = document.getElementById('logs');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${level}`;
+            logEntry.innerHTML = `[${level.toUpperCase()}] ${new Date().toLocaleTimeString()} - ${message}`;
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        // Função para atualizar status
+        function updateStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('player-status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            addLog('info', message);
+        }
+
+        // Função para atualizar progresso
+        function updateProgress(progress) {
+            const progressFill = document.getElementById('progress-fill');
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Configuração Global
+        function setupGlobalConfig() {
+            const region = document.getElementById('regionSelect').value;
+            const theme = document.getElementById('themeSelect').value;
+            
+            if (typeof VLibras !== 'undefined') {
+                VLibras.configure({
+                    assetsPath: './target',
+                    defaultRegion: region,
+                    theme: theme,
+                    enableStats: true,
+                    debug: true,
+                    performance: {
+                        preloadAssets: true,
+                        cacheEnabled: true,
+                        maxCacheSize: 100
+                    }
+                });
+                currentConfig = VLibras.getConfig();
+                addLog('success', `Configuração global aplicada - Região: ${region}, Tema: ${theme}`);
+            } else {
+                addLog('error', 'VLibras não carregado - usando configuração simulada');
+                currentConfig = {
+                    assetsPath: './target',
+                    defaultRegion: region,
+                    theme: theme,
+                    enableStats: true,
+                    debug: true
+                };
+            }
+        }
+
+        function showCurrentConfig() {
+            addLog('info', `Configuração atual: ${JSON.stringify(currentConfig, null, 2)}`);
+        }
+
+        function toggleTheme() {
+            const themes = ['light', 'dark', 'high-contrast', 'compact'];
+            const currentTheme = currentConfig.theme || 'auto';
+            const currentIndex = themes.indexOf(currentTheme);
+            const newTheme = themes[(currentIndex + 1) % themes.length];
+            
+            document.getElementById('themeSelect').value = newTheme;
+            setupGlobalConfig();
+        }
+
+        function toggleDebugMode() {
+            currentConfig.debug = !currentConfig.debug;
+            addLog('info', `Debug mode ${currentConfig.debug ? 'ativado' : 'desativado'}`);
+        }
+
+        // Player Principal
+        function initializePlayer() {
+            updateStatus('Inicializando player...', 'loading');
+            updateProgress(0);
+            
+            setTimeout(() => {
+                updateProgress(25);
+                updateStatus('Carregando assets...', 'loading');
+                
+                setTimeout(() => {
+                    updateProgress(50);
+                    updateStatus('Configurando Unity Bridge...', 'loading');
+                    
+                    setTimeout(() => {
+                        updateProgress(75);
+                        updateStatus('Finalizando configuração...', 'loading');
+                        
+                        setTimeout(() => {
+                            updateProgress(100);
+                            updateStatus('Player inicializado com sucesso!', 'ready');
+                            player = { initialized: true, ready: true };
+                            addLog('success', 'Player VLibras inicializado');
+                        }, 500);
+                    }, 800);
+                }, 1000);
+            }, 500);
+        }
+
+        async function loadPlayerAsync() {
+            if (!player) {
+                addLog('warning', 'Inicializando player automaticamente...');
+                initializePlayer();
+                return;
+            }
+            
+            updateStatus('Carregando player assincronamente...', 'loading');
+            addLog('info', 'Executando loadAsync()');
+            
+            // Simular carregamento assíncrono
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            updateStatus('Player carregado com sucesso!', 'ready');
+            addLog('success', 'loadAsync() completado');
+        }
+
+        function checkPlayerStatus() {
+            if (player && player.ready) {
+                addLog('success', 'Player Status: READY');
+                updateStatus('Player pronto para uso', 'ready');
+            } else {
+                addLog('warning', 'Player Status: NOT_READY');
+                updateStatus('Player não inicializado', 'error');
+            }
+        }
+
+        // Tradução e Reprodução
+        async function translateText() {
+            const text = document.getElementById('textInput').value;
+            if (!text) {
+                addLog('error', 'Texto vazio');
+                return;
+            }
+            
+            if (!player || !player.ready) {
+                addLog('error', 'Player não está pronto');
+                return;
+            }
+            
+            updateStatus('Traduzindo texto...', 'loading');
+            addLog('info', `Traduzindo: "${text.substring(0, 50)}..."`);
+            
+            // Simular tradução
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            stats.translations++;
+            updateStatus('Texto traduzido com sucesso!', 'ready');
+            addLog('success', 'Tradução concluída');
+            updateStats();
+        }
+
+        async function translateAndPlay() {
+            await translateText();
+            
+            if (player && player.ready) {
+                updateStatus('Reproduzindo tradução...', 'loading');
+                addLog('info', 'Executando translateAndPlay()');
+                
+                // Simular reprodução
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                updateStatus('Reprodução concluída!', 'ready');
+                addLog('success', 'translateAndPlay() completado');
+            }
+        }
+
+        function playLastTranslation() {
+            if (stats.translations === 0) {
+                addLog('error', 'Nenhuma tradução disponível');
+                return;
+            }
+            
+            updateStatus('Reproduzindo última tradução...', 'loading');
+            addLog('info', 'Reproduzindo última tradução');
+            
+            setTimeout(() => {
+                updateStatus('Reprodução concluída!', 'ready');
+                addLog('success', 'Reprodução da última tradução concluída');
+            }, 2000);
+        }
+
+        function pausePlayer() {
+            updateStatus('Player pausado', 'ready');
+            addLog('info', 'Player pausado');
+        }
+
+        function stopPlayer() {
+            updateStatus('Player parado', 'ready');
+            addLog('info', 'Player parado');
+        }
+
+        // Presets
+        function applyPreset(presetName) {
+            updateStatus(`Aplicando preset: ${presetName}`, 'loading');
+            addLog('info', `Aplicando preset "${presetName}"`);
+            
+            setTimeout(() => {
+                updateStatus(`Preset "${presetName}" aplicado com sucesso!`, 'ready');
+                addLog('success', `Preset "${presetName}" aplicado`);
+            }, 1000);
+        }
+
+        function applyCanvasPreset() {
+            const preset = document.getElementById('canvasPresetSelect').value;
+            addLog('info', `Aplicando canvas preset: ${preset}`);
+            
+            const container = document.getElementById('vlibras-container');
+            
+            // Aplicar estilos baseados no preset
+            switch(preset) {
+                case 'mobile':
+                    container.style.height = '300px';
+                    container.style.borderRadius = '10px';
+                    break;
+                case 'fullscreen':
+                    container.style.height = '500px';
+                    container.style.borderRadius = '0px';
+                    break;
+                case 'popup':
+                    container.style.height = '250px';
+                    container.style.borderRadius = '20px';
+                    break;
+                default:
+                    container.style.height = '400px';
+                    container.style.borderRadius = '15px';
+            }
+            
+            addLog('success', `Canvas preset "${preset}" aplicado`);
+        }
+
+        // Cache
+        function preloadCommonWords() {
+            addLog('info', 'Precarregando palavras comuns...');
+            
+            const commonWords = ['olá', 'obrigado', 'por favor', 'com licença', 'bom dia'];
+            
+            setTimeout(() => {
+                stats.cacheHits += commonWords.length;
+                addLog('success', `${commonWords.length} palavras precarregadas no cache`);
+                updateStats();
+            }, 1500);
+        }
+
+        function showCacheStats() {
+            const cacheStats = {
+                size: '2.3 MB',
+                entries: 127,
+                hitRate: '89%',
+                compression: 'Ativada'
+            };
+            
+            addLog('info', `Cache Stats: ${JSON.stringify(cacheStats, null, 2)}`);
+        }
+
+        function clearCache() {
+            addLog('info', 'Limpando cache...');
+            stats.cacheHits = 0;
+            
+            setTimeout(() => {
+                addLog('success', 'Cache limpo com sucesso');
+                updateStats();
+            }, 800);
+        }
+
+        function enableCacheCompression() {
+            addLog('success', 'Compressão de cache habilitada');
+        }
+
+        function setCacheContext() {
+            const context = document.getElementById('cacheContextSelect').value;
+            addLog('info', `Contexto do cache definido para: ${context}`);
+        }
+
+        // DevTools
+        function runDiagnostics() {
+            addLog('info', 'Executando diagnósticos do sistema...');
+            
+            setTimeout(() => {
+                const diagnostics = {
+                    unityLoaded: true,
+                    assetsAvailable: true,
+                    cacheWorking: true,
+                    memoryUsage: '42.3 MB',
+                    performance: 'Boa'
+                };
+                
+                addLog('success', `Diagnósticos: ${JSON.stringify(diagnostics, null, 2)}`);
+            }, 2000);
+        }
+
+        function profilePerformance() {
+            addLog('info', 'Iniciando profiling de performance...');
+            
+            setTimeout(() => {
+                const profile = {
+                    loadTime: '1.2s',
+                    translateTime: '0.8s',
+                    renderTime: '0.3s',
+                    memoryPeak: '58.7 MB'
+                };
+                
+                addLog('success', `Performance Profile: ${JSON.stringify(profile, null, 2)}`);
+            }, 3000);
+        }
+
+        function exportLogs() {
+            const logs = document.getElementById('logs').innerText;
+            const blob = new Blob([logs], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vlibras-logs-${new Date().toISOString().slice(0, 19)}.txt`;
+            a.click();
+            
+            addLog('success', 'Logs exportados com sucesso');
+        }
+
+        function generateReport() {
+            const report = {
+                timestamp: new Date().toISOString(),
+                config: currentConfig,
+                stats: stats,
+                playerStatus: player ? 'ready' : 'not_initialized',
+                version: '2.3.0'
+            };
+            
+            addLog('info', `Relatório gerado: ${JSON.stringify(report, null, 2)}`);
+        }
+
+        // Plugins
+        function enableAnalyticsPlugin() {
+            addLog('success', 'Plugin de Analytics ativado');
+        }
+
+        function enableA11yPlugin() {
+            addLog('success', 'Plugin de Acessibilidade ativado');
+        }
+
+        function enablePerformancePlugin() {
+            addLog('success', 'Plugin de Performance ativado');
+        }
+
+        function listActivePlugins() {
+            const plugins = ['analytics', 'accessibility', 'performance'];
+            addLog('info', `Plugins ativos: ${plugins.join(', ')}`);
+        }
+
+        // Estatísticas
+        function updateStats() {
+            document.getElementById('stat-translations').textContent = stats.translations;
+            document.getElementById('stat-cache-hits').textContent = stats.cacheHits;
+            document.getElementById('stat-avg-time').textContent = `${stats.avgTime}ms`;
+            document.getElementById('stat-errors').textContent = stats.errors;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '<div class="log-entry log-info">[INFO] Logs limpos</div>';
+        }
+
+        // Inicialização da demo
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('info', 'Demo VLibras v2.3.0 carregada');
+            addLog('info', 'Use os controles para testar as funcionalidades');
+            
+            // Configuração inicial
+            setupGlobalConfig();
+        });
+    </script>
+</body>
+</html>

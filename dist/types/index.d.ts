@@ -1,21 +1,23 @@
 /**
- * Configurações principais do VLibras Player
+ * VLibras Player WebJS - Estrutura SOLID
+ * Exportações principais organizadas por responsabilidade
  */
-export interface PlayerConfig {
-    /** URL do serviço de tradução */
-    translator?: string;
-    /** Caminho para os assets do Unity */
-    targetPath?: string;
-    /** Callback executado quando o player é carregado */
-    onLoad?: () => void;
-    /** Função customizada para exibir progresso de carregamento */
-    progress?: (wrapper: HTMLElement) => any;
-}
-/**
- * Estados melhorados baseados no feedback do FUNCOES-UTILITARIAS-VLIBRAS.md
- *
- * Estados mais claros e específicos para melhor UX
- */
+export { VLibrasPlayer } from './core/player/VLibrasPlayer';
+export { PlayerManagerAdapter } from './core/player/PlayerManagerAdapter';
+export { GlosaTranslator } from './core/unity/GlosaTranslator';
+export { UnityBridge, setupUnityBridge, isUnityBridgeReady } from './core/unity/UnityBridge';
+export { config } from './core/config/config';
+export { VLibrasGlobalConfig } from './core/config/VLibrasGlobalConfig';
+export * from './infrastructure/events/VLibrasEvents';
+export * from './infrastructure/cache/VLibrasCache';
+export { VLibrasCSS, setupOptimizedCSS } from './infrastructure/styling/VLibrasCSS';
+export * from './infrastructure/styling/VLibrasThemes';
+export * from './infrastructure/canvas/VLibrasCanvasConfig';
+export { VLibrasPresets, usePreset } from './features/presets/VLibrasPresets';
+export * from './features/presets/VLibrasPresetsAdvanced';
+export * from './features/plugins/VLibrasPlugins';
+export * from './features/devtools/VLibrasDevTools';
+export * from './adapters/testing/VLibrasTestUtils';
 export declare enum PlayerStatus {
     IDLE = "idle",
     INITIALIZING = "initializing",// Inicializando biblioteca
@@ -153,4 +155,14 @@ export type SupportedRegion = 'BR' | 'PE' | 'RJ' | 'SP';
  * Velocidades suportadas
  */
 export type PlaybackSpeed = 0.5 | 1.0 | 1.5 | 2.0;
+/**
+ * Resultado de uma operação de reprodução
+ */
+export interface PlaybackResult {
+    duration: number;
+    totalFrames: number;
+    success: boolean;
+    startTime: number;
+    endTime: number;
+}
 //# sourceMappingURL=index.d.ts.map

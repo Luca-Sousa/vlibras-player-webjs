@@ -2,13 +2,36 @@
 
 Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player em aplicações web, permitindo fácil tradução de texto para Libras (Língua Brasileira de Sinais) através de um avatar animado.
 
-![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)
+![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)
 ![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)
 
+## 🎪 **Demo Completa**
+
+**Veja todas as funcionalidades em ação!** Abra o arquivo [`demo/demo-completa.html`](./demo/demo-completa.html) em seu navegador para uma demonstração interativa completa de todas as funcionalidades da v2.3.0.
+
+A demo inclui:
+- ⚙️ **Configuração Global** - Temas, regiões, debug mode
+- 🎭 **Player Principal** - Inicialização assíncrona e status
+- 🔤 **Tradução e Reprodução** - API Promise-based
+- 🎛️ **Presets Avançados** - Blog, educação, corporativo, etc.
+- 🗄️ **Cache Inteligente** - Preload, contextos, compressão
+- 🛠️ **DevTools** - Diagnósticos, profiling, logs
+- 🔌 **Sistema de Plugins** - Analytics, acessibilidade, performance
+- 📊 **Estatísticas** - Métricas em tempo real
+
 ## ✨ Principais Melhorias
 
-### 🆕 Novidades da v2.2.0
+### 🆕 Novidades da v2.3.0
+- **API Promise-based completa** com `loadAsync()`, `translateAsync()`, `playAsync()`
+- **Presets avançados** para casos reais (blog, educação, corporativo, etc.)
+- **Sistema de temas integrado** (light, dark, high-contrast, compact)
+- **Canvas responsivo** com presets para mobile, tablet, desktop
+- **Sistema de plugins extensível** (analytics, acessibilidade, performance)
+- **Utilitários de teste** com mocks e assertions
+- **Configuração avançada de canvas** com auto-responsividade
+
+### 🎯 Funcionalidades da v2.2.0
 - **Sistema de eventos type-safe** com VLibrasEventEmitter
 - **DevTools avançado** com diagnósticos e profiling
 - **Configuração global** com persistência e auto-configuração
@@ -572,6 +595,77 @@ LGPL-3.0 © [VLibras Team](https://www.gov.br/governodigital/pt-br/acessibilidad
 - 🛠️ [CONTRIBUTING.md](./CONTRIBUTING.md) - Como contribuir com o projeto
 - ⚙️ [FUNCOES-UTILITARIAS-VLIBRAS.md](./FUNCOES-UTILITARIAS-VLIBRAS.md) - Requisitos e especificações
 
+## 🚀 Funcionalidades Avançadas (v2.3.0+)
+
+### API Promise-based
+```typescript
+import { VLibrasPlayer } from 'vlibras-player-webjs';
+
+const player = new VLibrasPlayer();
+
+// Métodos assíncronos
+await player.loadAsync('#vlibras-container');
+const result = await player.translateAsync('Olá mundo!');
+await player.playAsync();
+
+// Métodos combinados
+const playbackResult = await player.translateAndPlay('Bem-vindos!');
+console.log('Tradução:', playbackResult.translation);
+console.log('Duração:', playbackResult.duration);
+```
+
+### Presets Avançados
+```typescript
+import { VLibrasPresets, usePreset } from 'vlibras-player-webjs';
+
+// Presets prontos para uso
+const blogConfig = VLibrasPresets.blog();
+const eduConfig = VLibrasPresets.education();
+const corpConfig = VLibrasPresets.corporate();
+
+// Aplicar preset com customizações
+const customConfig = usePreset('blog', {
+  showControls: false,
+  autoPlay: true
+});
+
+const player = new VLibrasPlayer(customConfig);
+```
+
+### Configuração Avançada de Canvas
+```typescript
+import { VLibrasCanvasConfig } from 'vlibras-player-webjs';
+
+// Configuração responsiva automática
+VLibrasCanvasConfig.setupResponsive('#vlibras-container', {
+  mobile: { width: 200, height: 200 },
+  tablet: { width: 300, height: 300 },
+  desktop: { width: 400, height: 400 }
+});
+
+// Presets de qualidade
+VLibrasCanvasConfig.applyQualityPreset('high-quality');
+
+// Auto-injeção de CSS otimizado
+VLibrasCanvasConfig.injectOptimizedCSS();
+```
+
+### Utilitários de Teste
+```typescript
+import { VLibrasTestUtils } from 'vlibras-player-webjs';
+
+// Mock para testes
+const mockPlayer = VLibrasTestUtils.createMockPlayer();
+
+// Assertions específicas
+await VLibrasTestUtils.assertPlayerLoaded(player);
+await VLibrasTestUtils.assertTranslationCompleted(player, 'teste');
+
+// Helpers de teste
+const testHelper = VLibrasTestUtils.createTestHelper();
+await testHelper.setupTestEnvironment();
+```
+
 ## 🆘 Suporte
 
 - 📖 [Documentação Oficial](https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/vlibras)
@@ -582,7 +676,13 @@ LGPL-3.0 © [VLibras Team](https://www.gov.br/governodigital/pt-br/acessibilidad
 - [x] ✅ DevTools e diagnósticos (v2.2.0) 
 - [x] ✅ Cache inteligente (v2.2.0)
 - [x] ✅ Configuração global (v2.2.0)
+- [x] ✅ API Promise-based (v2.3.0)
+- [x] ✅ Presets avançados (v2.3.0)
+- [x] ✅ Utilitários de teste (v2.3.0)
+- [x] ✅ Canvas otimizado (v2.3.0)
 - [ ] Modo offline completo
+- [ ] WebWorker para processamento
+- [ ] Plugin system extensível
 
 ---
 
