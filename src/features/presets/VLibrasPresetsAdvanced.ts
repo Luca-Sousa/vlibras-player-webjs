@@ -3,9 +3,9 @@
  * Simplifica a configuração para diferentes cenários
  */
 
-import { PlayerConfig } from '../../types/core.types';
+import { VLibrasPlayerConfig } from '../../types/core.types';
 
-export interface PresetConfig extends PlayerConfig {
+export interface PresetConfig extends VLibrasPlayerConfig {
   // Configurações específicas do preset
   name?: string;
   description?: string;

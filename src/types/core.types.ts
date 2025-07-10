@@ -18,9 +18,11 @@ export interface VLibrasPlayerConfig {
   enableCache?: boolean;
   cacheTimeout?: number;
   fallbackUrl?: string;
+  targetPath?: string; // Caminho para assets do Unity
   errorCallback?: (error: Error) => void;
   loadingCallback?: (progress: number) => void;
   onReady?: () => void;
+  onLoad?: () => void; // Compatibilidade com versões anteriores
   onPlay?: () => void;
   onPause?: () => void;
   onStop?: () => void;

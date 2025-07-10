@@ -5,12 +5,12 @@
  * para configurações prontas para diferentes casos de uso.
  */
 
-import { PlayerConfig } from '../../types/core.types';
+import { VLibrasPlayerConfig } from '../../types/core.types';
 
 /**
  * Configurações específicas para diferentes casos de uso
  */
-export interface PresetConfig extends PlayerConfig {
+export interface PresetConfig extends VLibrasPlayerConfig {
   // Configurações de UI
   autoPlay?: boolean;
   showControls?: boolean;

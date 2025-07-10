@@ -2,7 +2,7 @@ import { config } from '../config/config';
 import { PlayerManagerAdapter } from './PlayerManagerAdapter';
 import { GlosaTranslator, TranslationCallback } from '../unity/GlosaTranslator';
 import {
-  PlayerConfig,
+  VLibrasPlayerConfig,
   PlayerStatus,
   TranslateOptions,
   PlayOptions,
@@ -22,7 +22,7 @@ import { VLibrasDevTools } from '../../features/devtools/VLibrasDevTools';
  * VLibras Player - Classe principal para controle do avatar de Libras
  */
 export class VLibrasPlayer {
-  private options: Required<PlayerConfig>;
+  private options: Partial<VLibrasPlayerConfig>;
   private playerManager: PlayerManagerAdapter;
   private translator: GlosaTranslator;
   private text?: string;
@@ -35,16 +35,16 @@ export class VLibrasPlayer {
   private region: SupportedRegion = 'BR';
   private globalGlossLength: string = '';
 
-  constructor(options: PlayerConfig = {}) {
+  constructor(options: VLibrasPlayerConfig = {}) {
     this.options = {
-      translator: options.translator || config.translatorUrl,
+      ...options,
+      // Valores padrão para compatibilidade
+      fallbackUrl: options.fallbackUrl || config.translatorUrl,
       targetPath: options.targetPath || config.defaultTargetPath,
-      onLoad: options.onLoad || (() => {}),
-      progress: options.progress || (() => null)
     };
 
     this.playerManager = new PlayerManagerAdapter();
-    this.translator = new GlosaTranslator(this.options.translator);
+    this.translator = new GlosaTranslator(this.options.fallbackUrl || config.translatorUrl);
     this.eventEmitter = new VLibrasEventEmitter();
 
     this.setupPlayerManagerEvents();
@@ -59,8 +59,8 @@ export class VLibrasPlayer {
       this.onLoad();
       this.playerManager.setBaseUrl(config.dictionaryUrl + this.region + '/');
       
-      if (this.options.onLoad) {
-        this.options.onLoad();
+      if (this.options.onReady) {
+        this.options.onReady();
       } else {
         this.play(undefined, { fromTranslation: true });
       }
@@ -268,7 +268,7 @@ export class VLibrasPlayer {
   }
 
   private getTargetScript(): string {
-    return this.joinUrl(this.options.targetPath, config.unity.loaderFile);
+    return this.joinUrl(this.options.targetPath || config.defaultTargetPath, config.unity.loaderFile);
   }
 
   private joinUrl(...parts: string[]): string {
@@ -276,7 +276,7 @@ export class VLibrasPlayer {
   }
 
   private initializeUnity(): void {
-    const targetSetup = this.joinUrl(this.options.targetPath, config.unity.configFile);
+    const targetSetup = this.joinUrl(this.options.targetPath || config.defaultTargetPath, config.unity.configFile);
     const targetScript = document.createElement('script');
 
     targetScript.src = this.getTargetScript();
