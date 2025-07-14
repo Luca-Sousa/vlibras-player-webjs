@@ -36,11 +36,28 @@ export class VLibrasPlayer {
   private globalGlossLength: string = '';
 
   constructor(options: VLibrasPlayerConfig = {}) {
+    // Detecta automaticamente o caminho dos assets
+    const autoAssetsPath = (() => {
+      // Se estiver rodando em ambiente web
+      if (typeof window !== 'undefined') {
+        // Tenta detectar se está em ambiente de desenvolvimento ou produção
+        // 1. Se assets estão em /assets/vlibras (build padrão)
+        if (window.location.pathname.includes('/demo') || window.location.pathname.includes('/dist')) {
+          return '/assets/vlibras';
+        }
+        // 2. Se rodando via node_modules (npm install)
+        // Tenta acessar via caminho absoluto do pacote
+        return '/node_modules/vlibras-player-webjs/assets/vlibras';
+      }
+      // Ambiente não web
+      return config.defaultTargetPath;
+    })();
+
     this.options = {
       ...options,
       // Valores padrão para compatibilidade
       fallbackUrl: options.fallbackUrl || config.translatorUrl,
-      targetPath: options.targetPath || config.defaultTargetPath,
+      targetPath: options.targetPath || autoAssetsPath,
     };
 
     this.playerManager = new PlayerManagerAdapter();
