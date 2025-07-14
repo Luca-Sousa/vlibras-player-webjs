@@ -38,18 +38,15 @@ export class VLibrasPlayer {
   constructor(options: VLibrasPlayerConfig = {}) {
     // Detecta automaticamente o caminho dos assets
     const autoAssetsPath = (() => {
-      // Se estiver rodando em ambiente web
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
         // Tenta detectar se está em ambiente de desenvolvimento ou produção
-        // 1. Se assets estão em /assets/vlibras (build padrão)
         if (window.location.pathname.includes('/demo') || window.location.pathname.includes('/dist')) {
           return '/assets/vlibras';
         }
         // 2. Se rodando via node_modules (npm install)
-        // Tenta acessar via caminho absoluto do pacote
         return '/node_modules/vlibras-player-webjs/assets/vlibras';
       }
-      // Ambiente não web
+      // Ambiente não web ou teste
       return config.defaultTargetPath;
     })();
 
