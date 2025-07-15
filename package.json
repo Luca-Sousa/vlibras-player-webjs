@@ -1,6 +1,6 @@
 {
   "name": "vlibras-player-webjs",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Biblioteca JavaScript moderna para integração do VLibras Player com React, Vue, Angular e vanilla JS",
   "keywords": [
     "vlibras",
