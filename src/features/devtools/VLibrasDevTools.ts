@@ -180,15 +180,18 @@ export class VLibrasDevTools {
    */
   static getDebugInfo(): DebugInfo {
     return {
-      version: '2.1.0',
+      version: '2.4.0',
       buildTime: new Date().toISOString(),
-      environment: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+      environment: typeof process !== 'undefined' && process.env?.NODE_ENV === 'development' ? 'development' : 'production',
       features: [
         'UnityBridge',
         'VLibrasPresets',
         'VLibrasCSS',
         'VLibrasEvents',
-        'VLibrasDevTools'
+        'VLibrasDevTools',
+        'ReactHooks',
+        'AccessibilitySupport',
+        'PerformanceMonitoring'
       ],
       configuration: {
         debugMode: this.isDebugMode,

@@ -1,20 +1,30 @@
 {
   "name": "vlibras-player-webjs",
-  "version": "2.3.1",
-  "description": "Biblioteca JavaScript moderna para integração do VLibras Player em aplicações web",
+  "version": "2.4.0",
+  "description": "Biblioteca JavaScript moderna para integração do VLibras Player com React, Vue, Angular e vanilla JS",
   "keywords": [
     "vlibras",
     "libras",
-    "acessibilidade",
     "accessibility",
+    "acessibilidade",
     "avatar",
     "sign-language",
     "brazilian-sign-language",
+    "lingua-de-sinais",
     "react",
+    "react18",
     "react19",
     "vue",
-    "angular",
-    "typescript"
+    "angular", 
+    "typescript",
+    "javascript",
+    "inclusive-design",
+    "assistive-technology",
+    "web-accessibility",
+    "a11y",
+    "brazil",
+    "deaf",
+    "surdo"
   ],
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -50,6 +60,21 @@
       "import": "./dist/esm/adapters/testing/index.js",
       "require": "./dist/cjs/adapters/testing/index.js",
       "types": "./dist/types/adapters/testing/index.d.ts"
+    },
+    "./plugins": {
+      "import": "./dist/esm/features/plugins/index.js",
+      "require": "./dist/cjs/features/plugins/index.js",
+      "types": "./dist/types/features/plugins/index.d.ts"
+    },
+    "./plugins/examples": {
+      "import": "./dist/esm/features/plugins/examples/index.js",
+      "require": "./dist/cjs/features/plugins/examples/index.js",
+      "types": "./dist/types/features/plugins/examples/index.d.ts"
+    },
+    "./devtools": {
+      "import": "./dist/esm/features/devtools/index.js",
+      "require": "./dist/cjs/features/devtools/index.js",
+      "types": "./dist/types/features/devtools/index.d.ts"
     },
     "./styles": "./dist/styles/vlibras.css"
   },

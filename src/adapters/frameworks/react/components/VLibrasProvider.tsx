@@ -12,10 +12,13 @@ interface VLibrasContextType {
 
 interface VLibrasConfig {
   targetPath: string;
-  theme: 'light' | 'dark' | 'auto';
+  theme: 'light' | 'dark' | 'auto' | 'high-contrast';
   autoInitialize: boolean;
   enableCache: boolean;
   debug: boolean;
+  playbackSpeed?: number;
+  language?: 'pt-BR' | 'en' | 'es';
+  enableAccessibility?: boolean;
 }
 
 const VLibrasContext = createContext<VLibrasContextType | undefined>(undefined);
@@ -30,7 +33,10 @@ const defaultConfig: VLibrasConfig = {
   theme: 'auto',
   autoInitialize: true,
   enableCache: true,
-  debug: false
+  debug: false,
+  playbackSpeed: 1,
+  language: 'pt-BR',
+  enableAccessibility: true
 };
 
 export function VLibrasProvider({ children, config: userConfig = {} }: VLibrasProviderProps) {

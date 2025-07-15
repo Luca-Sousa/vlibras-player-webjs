@@ -2,9 +2,11 @@
 
 Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player em aplicações web, permitindo fácil tradução de texto para Libras (Língua Brasileira de Sinais) através de um avatar animado.
 
-![Version](https://img.shields.io/badge/version-v2.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-v2.4.0-blue.svg)
 ![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)
+![React](https://img.shields.io/badge/React-Ready-blue.svg)
+![Accessibility](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-green.svg)
 
 ## 🎪 **Demo Completa**
 
@@ -22,7 +24,17 @@ A demo inclui:
 
 ## ✨ Principais Melhorias
 
-### 🆕 Novidades da v2.3.0
+### 🆕 **NOVIDADES DA v2.4.0** 🎉
+- **🎯 Hooks React Avançados** - `useVLibrasTranslation`, `useVLibrasPerformance`, `useVLibrasAccessibility`
+- **♿ Acessibilidade Total** - WCAG 2.1 AA, leitores de tela, navegação por teclado
+- **🔌 Sistema de Plugins** - Analytics, notificações, extensibilidade total
+- **🎨 Componentes React** - `VLibrasSettings`, `withVLibrasAccessibility`, utilitários
+- **📊 Monitoramento Real** - Métricas de performance, diagnósticos, profiling
+- **🛠️ DevTools Aprimorados** - Versão 2.4.0 com funcionalidades expandidas
+- **⚡ Detecção Automática** - Assets path, configurações inteligentes
+- **🎯 Tree Shaking Otimizado** - Apenas código necessário no bundle
+
+### 🎯 Funcionalidades da v2.3.0
 - **API Promise-based completa** com `loadAsync()`, `translateAsync()`, `playAsync()`
 - **Presets avançados** para casos reais (blog, educação, corporativo, etc.)
 - **Sistema de temas integrado** (light, dark, high-contrast, compact)
