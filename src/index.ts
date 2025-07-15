@@ -41,8 +41,12 @@ export * from './features/plugins/VLibrasPlugins';
 export * from './features/devtools/VLibrasDevTools';
 
 // === ADAPTERS (Integrações Externas) ===
-// Utilitários de teste
+// Testing utilities
 export * from './adapters/testing/VLibrasTestUtils';
+
+// React components are available via separate exports:
+// import { VLibrasPlayer } from 'vlibras-player-webjs/react';
+// import { useVLibras } from 'vlibras-player-webjs/react/hooks';
 
 // === TYPES (Tipos Centralizados) ===
 // export * from './types';

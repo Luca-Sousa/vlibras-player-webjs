@@ -1,151 +1,186 @@
-/**
- * Hook personalizado para uso do VLibras no React
- * Interface Segregation: Contrato específico para React
- */
+import { useState, useEffect } from 'react';
 
-// Tipos minimalistas para evitar dependência direta do React
-type SetState<T> = (value: T | ((prev: T) => T)) => void;
-type EffectCallback = () => void | (() => void);
-type DependencyList = ReadonlyArray<any>;
-
-// Simulação das funções do React para compatibilidade
-let reactHooks: {
-  useState: <T>(initial: T) => [T, SetState<T>];
-  useEffect: (effect: EffectCallback, deps?: DependencyList) => void;
-  useRef: <T>(initial: T) => { current: T };
-} | null = null;
-
-// Carregamento lazy dos hooks do React
-const loadReactHooks = () => {
-  if (reactHooks) return reactHooks;
-  
-  try {
-    const React = require('react');
-    reactHooks = {
-      useState: React.useState,
-      useEffect: React.useEffect,
-      useRef: React.useRef
-    };
-    return reactHooks;
-  } catch {
-    throw new Error('React não está disponível. Instale o React para usar este hook.');
-  }
-};
-
-export interface UseVLibrasOptions {
-  autoLoad?: boolean;
-  preset?: 'dictionary' | 'quiz' | 'tutorial' | 'compact' | 'presentation' | 'accessibility' | 'development';
+// Tipos básicos para evitar dependência circular
+export interface VLibrasPlayerConfig {
+  container?: string | HTMLElement;
+  width?: number;
+  height?: string | number;
+  responsive?: boolean;
+  autoplay?: boolean;
+  controls?: boolean;
+  muted?: boolean;
+  debug?: boolean;
   theme?: 'light' | 'dark' | 'high-contrast' | 'auto';
+  language?: 'pt-br' | 'en' | 'es';
+  enableCache?: boolean;
+  cacheTimeout?: number;
+  fallbackUrl?: string;
+  targetPath?: string; // Caminho para assets do Unity
+  errorCallback?: (error: Error) => void;
+  loadingCallback?: (progress: number) => void;
   onReady?: () => void;
+  onLoad?: () => void;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onStop?: () => void;
   onError?: (error: Error) => void;
 }
 
-export interface UseVLibrasReturn {
-  player: any;
-  translate: (text: string) => Promise<void>;
-  play: () => Promise<void>;
-  pause: () => void;
-  stop: () => void;
-  isLoaded: boolean;
-  isPlaying: boolean;
-  error: Error | null;
+export interface VLibrasPlayerInstance {
+  translate(text: string, options?: any): void;
+  translateAsync(text: string, options?: any): Promise<string>;
+  play(gloss?: string, options?: any): void;
+  playAsync(gloss?: string, options?: any): Promise<any>;
+  pause(): void;
+  stop(): void;
+  destroy(): void;
+  translateAndPlay(text: string, options?: any): Promise<any>;
+  eventEmitter: any;
 }
 
+export interface UseVLibrasOptions extends VLibrasPlayerConfig {
+  autoInit?: boolean;
+  targetPath?: string; // Alias para assetsPath
+}
+
+export interface UseVLibrasReturn {
+  player: VLibrasPlayerInstance | null;
+  isLoaded: boolean;
+  isPlaying: boolean;
+  error: string | null;
+  translate: (text: string) => Promise<void>;
+  play: () => Promise<void>;
+  pause: () => Promise<void>;
+  stop: () => Promise<void>;
+  destroy: () => Promise<void>;
+}
+
+/**
+ * Hook React para gerenciar o VLibras Player
+ * Gerencia estado, lifecycle e fornece API simplificada
+ */
 export function useVLibras(options: UseVLibrasOptions = {}): UseVLibrasReturn {
-  const { useState, useEffect, useRef } = loadReactHooks();
-  
-  const [player, setPlayer] = useState<any>(null);
+  const [player, setPlayer] = useState<VLibrasPlayerInstance | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const playerRef = useRef<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const initializePlayer = async () => {
+    let mounted = true;
+
+    async function initPlayer() {
       try {
-        // Lazy load do VLibrasPlayer e presets
-        const { VLibrasPlayer, VLibrasPresets } = await import('../../../../index');
+        // Import usando caminho relativo correto
+        const playerModule = await import('../../../../core/player/VLibrasPlayer');
+        const VLibrasPlayer = playerModule.VLibrasPlayer;
         
-        let playerConfig: any = {
-          theme: options.theme,
-          onReady: () => {
-            setIsLoaded(true);
-            options.onReady?.();
-          },
-          onError: (err: Error) => {
-            setError(err);
-            options.onError?.(err);
-          },
-          onPlay: () => setIsPlaying(true),
-          onPause: () => setIsPlaying(false),
-          onStop: () => setIsPlaying(false)
-        };
+        if (!mounted) return;
 
-        // Aplicar preset se especificado
-        if (options.preset) {
-          const presetConfig = (VLibrasPresets as any)[options.preset];
-          if (presetConfig) {
-            playerConfig = { ...presetConfig, ...playerConfig };
-          }
-        }
+        const playerInstance = new VLibrasPlayer({
+          targetPath: options.targetPath || '/assets/vlibras',
+          theme: options.theme || 'auto',
+          debug: options.debug || false,
+          autoplay: options.autoplay || false
+        });
 
-        const playerInstance = new VLibrasPlayer(playerConfig);
         setPlayer(playerInstance);
-        playerRef.current = playerInstance;
+        setIsLoaded(true);
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Erro ao inicializar VLibras');
-        setError(error);
-        options.onError?.(error);
+        if (mounted) {
+          setError(err instanceof Error ? err.message : 'Failed to initialize VLibras Player');
+        }
       }
-    };
+    }
 
-    if (options.autoLoad !== false) {
-      initializePlayer();
+    if (options.autoInit !== false) {
+      initPlayer();
     }
 
     return () => {
-      if (playerRef.current) {
-        playerRef.current.destroy?.();
+      mounted = false;
+    };
+  }, [options.targetPath, options.theme, options.debug, options.autoplay, options.autoInit]);
+
+  // Cleanup quando componente desmonta
+  useEffect(() => {
+    return () => {
+      if (player) {
+        try {
+          player.destroy();
+        } catch (error) {
+          console.error('Error during player cleanup:', error);
+        }
       }
     };
-  }, [options.autoLoad, options.preset, options.theme]);
+  }, [player]);
 
+  // Handlers com error handling
   const translate = async (text: string): Promise<void> => {
-    if (!player) {
-      throw new Error('Player não inicializado');
+    if (!player) throw new Error('Player not initialized');
+    try {
+      await player.translateAsync(text);
+      setIsPlaying(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Translation failed');
+      throw err;
     }
-    return player.translateAsync(text);
   };
 
   const play = async (): Promise<void> => {
-    if (!player) {
-      throw new Error('Player não inicializado');
+    if (!player) throw new Error('Player not initialized');
+    try {
+      await player.playAsync();
+      setIsPlaying(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Play failed');
+      throw err;
     }
-    return player.playAsync();
   };
 
-  const pause = (): void => {
-    if (!player) {
-      throw new Error('Player não inicializado');
+  const pause = async (): Promise<void> => {
+    if (!player) throw new Error('Player not initialized');
+    try {
+      player.pause();
+      setIsPlaying(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Pause failed');
+      throw err;
     }
-    player.pause();
   };
 
-  const stop = (): void => {
-    if (!player) {
-      throw new Error('Player não inicializado');
+  const stop = async (): Promise<void> => {
+    if (!player) throw new Error('Player not initialized');
+    try {
+      player.stop();
+      setIsPlaying(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Stop failed');
+      throw err;
     }
-    player.stop();
+  };
+
+  const destroy = async (): Promise<void> => {
+    if (!player) return;
+    try {
+      player.destroy();
+      setPlayer(null);
+      setIsLoaded(false);
+      setIsPlaying(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Destroy failed');
+      throw err;
+    }
   };
 
   return {
     player,
+    isLoaded,
+    isPlaying,
+    error,
     translate,
     play,
     pause,
     stop,
-    isLoaded,
-    isPlaying,
-    error
+    destroy
   };
 }
