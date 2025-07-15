@@ -46,6 +46,11 @@
       "require": "./dist/cjs/adapters/frameworks/react/components/index.js",
       "types": "./dist/types/adapters/frameworks/react/components/index.d.ts"
     },
+    "./react/components": {
+      "import": "./dist/esm/adapters/frameworks/react/components/index.js",
+      "require": "./dist/cjs/adapters/frameworks/react/components/index.js",
+      "types": "./dist/types/adapters/frameworks/react/components/index.d.ts"
+    },
     "./react/hooks": {
       "import": "./dist/esm/adapters/frameworks/react/hooks/index.js",
       "require": "./dist/cjs/adapters/frameworks/react/hooks/index.js",

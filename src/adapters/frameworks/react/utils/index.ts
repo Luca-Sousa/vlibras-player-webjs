@@ -2,7 +2,7 @@
  * Utilitários específicos para integração React
  */
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 /**
  * Hook para detectar mudanças no texto e automatizar traduções
@@ -84,7 +84,7 @@ export function extractTextFromReactNode(node: React.ReactNode): string {
  * Hook para persistir configurações no localStorage
  */
 export function useLocalStorage<T>(key: string, defaultValue: T) {
-  const [value, setValue] = React.useState<T>(() => {
+  const [value, setValue] = useState<T>(() => {
     if (typeof window === 'undefined') return defaultValue;
     
     try {
@@ -165,7 +165,3 @@ export function prepareTextForLibras(text: string): string {
     .replace(/…/g, '...') // Normalizar reticências
     .replace(/–|—/g, '-'); // Normalizar travessões
 }
-
-// Re-export React para facilitar importação
-import React from 'react';
-export { React };
