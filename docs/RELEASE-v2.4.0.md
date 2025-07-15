@@ -130,7 +130,7 @@ const AccessibleComponent = withVLibrasAccessibility(MyComponent, {
 
 #### Plugin de Analytics
 ```typescript
-import { AnalyticsPlugin } from 'vlibras-player-webjs/plugins/examples';
+import { AnalyticsPlugin } from 'vlibras-player-webjs/plugins/presets';
 import { VLibrasPlugins } from 'vlibras-player-webjs/plugins';
 
 // Registrar plugin
@@ -144,7 +144,7 @@ console.log('Métricas:', report);
 
 #### Plugin de Notificações de Acessibilidade
 ```typescript
-import { AccessibilityNotifierPlugin } from 'vlibras-player-webjs/plugins/examples';
+import { AccessibilityNotifierPlugin } from 'vlibras-player-webjs/plugins/presets';
 
 const notifier = new AccessibilityNotifierPlugin();
 VLibrasPlugins.register(notifier);
@@ -235,7 +235,7 @@ const report = VLibrasDevTools.stopProfiling();
 - `vlibras-player-webjs/react/hooks` - Hooks especializados
 - `vlibras-player-webjs/react/utils` - Utilitários React
 - `vlibras-player-webjs/plugins` - Sistema de plugins
-- `vlibras-player-webjs/plugins/examples` - Plugins de exemplo
+- `vlibras-player-webjs/plugins/presets` - Plugins pré-configurados
 - `vlibras-player-webjs/devtools` - Ferramentas de desenvolvimento
 
 ### 🏗️ **Detecção Automática de Assets**
@@ -355,7 +355,7 @@ import {
   AnalyticsPlugin,
   AccessibilityNotifierPlugin,
   registerExamplePlugins 
-} from 'vlibras-player-webjs/plugins/examples';
+} from 'vlibras-player-webjs/plugins/presets';
 
 // Registrar plugins automaticamente
 registerExamplePlugins(VLibrasPlugins);

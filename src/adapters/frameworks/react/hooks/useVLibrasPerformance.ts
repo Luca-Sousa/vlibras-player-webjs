@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { safeNavigator } from '../ssr/useIsomorphicLayoutEffect';
 import { useVLibras } from './useVLibras';
 
 export interface PerformanceMetrics {
@@ -137,8 +138,8 @@ export function useVLibrasPerformance(
       timestamp: new Date().toISOString(),
       metrics,
       meta: {
-        userAgent: navigator.userAgent,
-        language: navigator.language,
+        userAgent: safeNavigator?.userAgent || 'unknown',
+        language: safeNavigator?.language || 'unknown',
         enableAnalytics,
         collectMetrics,
         sampleRate

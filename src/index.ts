@@ -49,6 +49,7 @@ export * from './adapters/testing/VLibrasTestUtils';
 // import { useVLibras } from 'vlibras-player-webjs/react/hooks';
 
 // === TYPES (Tipos Centralizados) ===
+// Tipos exportados pelos módulos específicos
 // export * from './types';
 
 // === LEGACY COMPATIBILITY (Compatibilidade com versão anterior) ===

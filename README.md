@@ -2,10 +2,11 @@
 
 Uma biblioteca JavaScript/TypeScript moderna para integração do VLibras Player em aplicações web, permitindo fácil tradução de texto para Libras (Língua Brasileira de Sinais) através de um avatar animado.
 
-![Version](https://img.shields.io/badge/version-v2.4.0-blue.svg)
+![Version](https://img.shields.io/badge/version-v2.4.1-blue.svg)
 ![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)
 ![React](https://img.shields.io/badge/React-Ready-blue.svg)
+![NextJS](https://img.shields.io/badge/NextJS-SSR%20Ready-green.svg)
 ![Accessibility](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-green.svg)
 
 ## 🎪 **Demo Completa**
@@ -24,7 +25,15 @@ A demo inclui:
 
 ## ✨ Principais Melhorias
 
-### 🆕 **NOVIDADES DA v2.4.0** 🎉
+### 🆕 **NOVIDADES DA v2.4.1** 🎉
+- **🔥 Suporte NextJS SSR** - Compatibilidade total com Server-Side Rendering
+- **🛡️ Componentes SSR-Safe** - `SSRSafeVLibrasProvider`, `NoSSR`, hooks isomórficos
+- **⚡ NextJS Integração** - Wrappers específicos, preload otimizado, bundle splitting
+- **🎯 Hooks Isomórficos** - `useIsomorphicLayoutEffect`, `useSSRSafeLocalStorage`
+- **🌍 Browser API Safety** - Verificações automáticas para `window`, `document`, `navigator`
+- **📦 Exports Modulares** - `vlibras-player-webjs/react/ssr` e `vlibras-player-webjs/nextjs`
+
+### 🎯 Funcionalidades da v2.4.0
 - **🎯 Hooks React Avançados** - `useVLibrasTranslation`, `useVLibrasPerformance`, `useVLibrasAccessibility`
 - **♿ Acessibilidade Total** - WCAG 2.1 AA, leitores de tela, navegação por teclado
 - **🔌 Sistema de Plugins** - Analytics, notificações, extensibilidade total
@@ -238,6 +247,43 @@ function VLibrasComponent() {
   );
 }
 ```
+
+### NextJS (com SSR)
+```jsx
+// _app.js
+import { SSRSafeVLibrasProvider } from 'vlibras-player-webjs/react/ssr';
+
+export default function App({ Component, pageProps }) {
+  return (
+    <SSRSafeVLibrasProvider config={{ assetsPath: '/vlibras' }}>
+      <Component {...pageProps} />
+    </SSRSafeVLibrasProvider>
+  );
+}
+
+// components/VLibrasPlayer.js
+import { createNextJSVLibrasComponent } from 'vlibras-player-webjs/nextjs';
+import { VLibrasPlayer } from 'vlibras-player-webjs/react/components';
+
+export const VLibrasPlayerSSR = createNextJSVLibrasComponent(VLibrasPlayer, {
+  ssr: false,
+  fallback: <div>Carregando VLibras...</div>
+});
+
+// pages/index.js
+import { VLibrasPlayerSSR } from '../components/VLibrasPlayer';
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Minha Página</h1>
+      <VLibrasPlayerSSR />
+    </div>
+  );
+}
+```
+
+**📖 [Ver Guia Completo NextJS](./docs/NEXTJS-GUIDE.md)**
 
 #### Hook Customizado para React 19
 ```jsx
@@ -601,11 +647,12 @@ LGPL-3.0 © [VLibras Team](https://www.gov.br/governodigital/pt-br/acessibilidad
 
 ## 📚 Documentação Completa
 
-- 📖 [CHANGELOG.md](./CHANGELOG.md) - Histórico detalhado de mudanças
-- 🚀 [EXEMPLOS v2.2.0](./EXEMPLOS-v2.2.0.md) - Guias práticos das novas funcionalidades
-- 🔄 [MIGRATION-GUIDE.md](./MIGRATION-GUIDE.md) - Guia de migração entre versões
+- 📖 [CHANGELOG.md](./docs/CHANGELOG.md) - Histórico detalhado de mudanças
+- 🚀 [EXEMPLOS v2.3.0](./docs/EXEMPLOS-v2.3.0.md) - Guias práticos das novas funcionalidades
+- 🔥 **[NEXTJS-GUIDE.md](./docs/NEXTJS-GUIDE.md) - Guia completo NextJS SSR (NOVO!)**
+- 🔄 [MIGRATION-GUIDE.md](./docs/MIGRATION-GUIDE.md) - Guia de migração entre versões
 - 🛠️ [CONTRIBUTING.md](./CONTRIBUTING.md) - Como contribuir com o projeto
-- ⚙️ [FUNCOES-UTILITARIAS-VLIBRAS.md](./FUNCOES-UTILITARIAS-VLIBRAS.md) - Requisitos e especificações
+- ⚙️ [FUNCOES-UTILITARIAS-VLIBRAS.md](./docs/FUNCOES-UTILITARIAS-VLIBRAS.md) - Requisitos e especificações
 
 ## 🚀 Funcionalidades Avançadas (v2.3.0+)
 

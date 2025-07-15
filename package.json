@@ -61,6 +61,16 @@
       "require": "./dist/cjs/adapters/frameworks/react/utils/index.js",
       "types": "./dist/types/adapters/frameworks/react/utils/index.d.ts"
     },
+    "./react/ssr": {
+      "import": "./dist/esm/adapters/frameworks/react/ssr/index.js",
+      "require": "./dist/cjs/adapters/frameworks/react/ssr/index.js",
+      "types": "./dist/types/adapters/frameworks/react/ssr/index.d.ts"
+    },
+    "./nextjs": {
+      "import": "./dist/esm/adapters/frameworks/react/ssr/NextJSCompatibility.js",
+      "require": "./dist/cjs/adapters/frameworks/react/ssr/NextJSCompatibility.js",
+      "types": "./dist/types/adapters/frameworks/react/ssr/NextJSCompatibility.d.ts"
+    },
     "./testing": {
       "import": "./dist/esm/adapters/testing/index.js",
       "require": "./dist/cjs/adapters/testing/index.js",
@@ -71,10 +81,10 @@
       "require": "./dist/cjs/features/plugins/index.js",
       "types": "./dist/types/features/plugins/index.d.ts"
     },
-    "./plugins/examples": {
-      "import": "./dist/esm/features/plugins/examples/index.js",
-      "require": "./dist/cjs/features/plugins/examples/index.js",
-      "types": "./dist/types/features/plugins/examples/index.d.ts"
+    "./plugins/presets": {
+      "import": "./dist/esm/features/plugins/presets/index.js",
+      "require": "./dist/cjs/features/plugins/presets/index.js",
+      "types": "./dist/types/features/plugins/presets/index.d.ts"
     },
     "./devtools": {
       "import": "./dist/esm/features/devtools/index.js",

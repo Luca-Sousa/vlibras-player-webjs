@@ -1,5 +1,54 @@
 # Changelog
 
+## [2.4.1] - 2025-01-27
+
+### 🔥 **SUPORTE NEXTJS SSR - COMPATIBILIDADE TOTAL**
+
+#### 🛡️ **SSR-Safe Components**
+- **SSRSafeVLibrasProvider**: Provider com hidratação adequada para NextJS
+- **NoSSR Component**: Wrapper para renderização apenas no cliente
+- **withNoSSR HOC**: Higher-Order Component para componentes SSR-unsafe
+- **SSRSafeProvider Context**: Contexto com detecção de hidratação
+
+#### ⚡ **NextJS Integration Layer**
+- **createNextJSVLibrasComponent**: Factory para componentes SSR-safe
+- **useNextJSDynamicVLibras**: Hook para import dinâmico com NextJS
+- **withNextJSVLibras**: HOC específico para páginas NextJS
+- **NextJSPageWrapper**: Wrapper completo para páginas
+- **NextJSUtils**: Utilitários para Head tags, preload e static props
+
+#### 🎯 **Hooks Isomórficos**
+- **useIsomorphicLayoutEffect**: useLayoutEffect SSR-safe
+- **useSSRSafeLocalStorage**: localStorage com fallback server-side
+- **useIsHydrated**: Hook para detectar hidratação do React
+- **useSSRSafeVLibras**: Hook principal SSR-safe
+
+#### 🌍 **Browser API Safety**
+- **safeWindow**: Acesso seguro ao window object
+- **safeDocument**: Acesso seguro ao document object  
+- **safeNavigator**: Acesso seguro ao navigator object
+- **safeBrowserCheck**: Verificação de ambiente browser/server
+
+#### 📦 **Exports Modulares**
+- **`vlibras-player-webjs/react/ssr`**: Utilitários SSR para React
+- **`vlibras-player-webjs/nextjs`**: Componentes específicos NextJS
+- Backward compatibility mantida com exports existentes
+
+#### 🔧 **Hooks Atualizados**
+- **useVLibrasAccessibility**: Atualizado com browser API safety
+- **useVLibrasPerformance**: Atualizado com verificações SSR
+- Todos os hooks React agora são SSR-safe por padrão
+
+### 📋 **Guia e Documentação**
+- **NEXTJS-GUIDE.md**: Guia completo de integração NextJS
+- **Solução de problemas**: Seção específica para SSR issues
+- **Padrões de uso**: HOCs, componentes dinâmicos, otimizações
+
+### 🚧 **Breaking Changes**
+- Nenhuma! Versão 100% backward compatible
+- Novos exports adicionais não afetam código existente
+- React hooks mantêm mesma API com melhorias internas
+
 ## [2.3.0] - 2025-01-10
 
 ### 🚀 **APIs Modernas e Funcionalidades Avançadas**

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { isBrowser, safeWindow, safeDocument } from '../ssr/useIsomorphicLayoutEffect';
 import { useVLibras } from './useVLibras';
 
 export interface AccessibilityOptions {
@@ -51,7 +52,9 @@ export function useVLibrasAccessibility(
 
   // Detectar preferências de movimento reduzido
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!isBrowser || !safeWindow?.matchMedia) return;
+    
+    const mediaQuery = safeWindow.matchMedia('(prefers-reduced-motion: reduce)');
     setIsReducedMotion(mediaQuery.matches);
     
     const handleChange = (e: MediaQueryListEvent) => {
@@ -65,7 +68,9 @@ export function useVLibrasAccessibility(
 
   // Detectar preferências de alto contraste
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-contrast: high)');
+    if (!isBrowser || !safeWindow?.matchMedia) return;
+    
+    const mediaQuery = safeWindow.matchMedia('(prefers-contrast: high)');
     setIsHighContrast(mediaQuery.matches);
     
     const handleChange = (e: MediaQueryListEvent) => {
@@ -79,12 +84,12 @@ export function useVLibrasAccessibility(
 
   // Criar região de anúncios para leitores de tela
   useEffect(() => {
-    if (!options.enableScreenReader) return;
+    if (!options.enableScreenReader || !isBrowser || !safeDocument) return;
 
-    let announceDiv = document.getElementById('vlibras-announcements') as HTMLDivElement;
+    let announceDiv = safeDocument.getElementById('vlibras-announcements') as HTMLDivElement;
     
     if (!announceDiv) {
-      announceDiv = document.createElement('div');
+      announceDiv = safeDocument.createElement('div');
       announceDiv.id = 'vlibras-announcements';
       announceDiv.setAttribute('aria-live', 'polite');
       announceDiv.setAttribute('aria-atomic', 'true');
@@ -93,7 +98,7 @@ export function useVLibrasAccessibility(
       announceDiv.style.width = '1px';
       announceDiv.style.height = '1px';
       announceDiv.style.overflow = 'hidden';
-      document.body.appendChild(announceDiv);
+      safeDocument.body.appendChild(announceDiv);
     }
     
     announceRef.current = announceDiv;
@@ -124,7 +129,9 @@ export function useVLibrasAccessibility(
   }, [options.enableScreenReader]);
 
   const focusPlayer = useCallback(() => {
-    const playerElement = document.querySelector('[data-vlibras-player]') as HTMLElement;
+    if (!isBrowser || !safeDocument) return;
+    
+    const playerElement = safeDocument.querySelector('[data-vlibras-player]') as HTMLElement;
     if (playerElement && playerElement.focus) {
       playerElement.focus();
     }
@@ -195,8 +202,15 @@ export function useVLibrasAccessibility(
       }
     };
 
-    document.addEventListener('keydown', handleKeyPress);
-    return () => document.removeEventListener('keydown', handleKeyPress);
+    if (isBrowser && safeDocument) {
+      safeDocument.addEventListener('keydown', handleKeyPress);
+      return () => {
+        if (safeDocument) {
+          safeDocument.removeEventListener('keydown', handleKeyPress);
+        }
+      };
+    }
+    return undefined;
   }, [options.enableKeyboardNav, isPlaying, player, announce, focusPlayer]);
 
   // Anunciar mudanças de estado
@@ -218,7 +232,9 @@ export function useVLibrasAccessibility(
 
   // Aplicar estilos de acessibilidade
   useEffect(() => {
-    const root = document.documentElement;
+    if (!isBrowser || !safeDocument) return;
+    
+    const root = safeDocument.documentElement;
     
     // Tamanho do texto
     const textSizeMap = {
