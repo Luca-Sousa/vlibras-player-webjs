@@ -1,4 +1,4 @@
-# 🎉 VLibras Player WebJS v2.4.1 - Solução Completa SSR
+# 🎉 VLibras Player WebJS v2.4.2 - Solução Completa SSR
 
 ## ✅ Problema Resolvido
 

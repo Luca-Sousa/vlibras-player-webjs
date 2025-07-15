@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.4.1] - 2025-01-27
+## [2.4.2] - 2025-01-27
 
 ### 🔥 **SUPORTE NEXTJS SSR - COMPATIBILIDADE TOTAL**
 
